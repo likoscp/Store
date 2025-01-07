@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const productRoutes = require('./routes/Products');
 const userRoutes = require('./routes/Users');
 const orderRoutes = require('./routes/Orders');
+const postRoutes = require('./routes/Posts');
 const path = require('path');
 
 const app = express();
@@ -22,6 +23,7 @@ app.use('/Swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/Products', productRoutes);
 app.use('/Users', userRoutes);
 app.use('/Orders', orderRoutes);
+app.use('/Posts', postRoutes);
 
 mongoose.connect('mongodb://localhost:27017/grocery_store', {
   useNewUrlParser: true,
