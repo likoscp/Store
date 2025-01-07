@@ -27,7 +27,9 @@
   "paths": {
     "/orders": {
       "get": {
-        "tags": ["orders"],
+        "tags": [
+          "orders"
+        ],
         "summary": "Get all orders",
         "responses": {
           "200": {
@@ -42,7 +44,9 @@
         }
       },
       "post": {
-        "tags": ["orders"],
+        "tags": [
+          "orders"
+        ],
         "summary": "Create a new order",
         "parameters": [
           {
@@ -64,7 +68,9 @@
         }
       },
       "put": {
-        "tags": ["orders"],
+        "tags": [
+          "orders"
+        ],
         "summary": "Update an existing order",
         "parameters": [
           {
@@ -93,7 +99,9 @@
         }
       },
       "delete": {
-        "tags": ["orders"],
+        "tags": [
+          "orders"
+        ],
         "summary": "Delete an order",
         "parameters": [
           {
@@ -113,7 +121,9 @@
     },
     "/posts": {
       "get": {
-        "tags": ["posts"],
+        "tags": [
+          "posts"
+        ],
         "summary": "Get all posts",
         "responses": {
           "200": {
@@ -128,7 +138,9 @@
         }
       },
       "post": {
-        "tags": ["posts"],
+        "tags": [
+          "posts"
+        ],
         "summary": "Create a new post",
         "parameters": [
           {
@@ -150,7 +162,9 @@
         }
       },
       "put": {
-        "tags": ["posts"],
+        "tags": [
+          "posts"
+        ],
         "summary": "Update an existing post",
         "parameters": [
           {
@@ -179,7 +193,9 @@
         }
       },
       "delete": {
-        "tags": ["posts"],
+        "tags": [
+          "posts"
+        ],
         "summary": "Delete a post",
         "parameters": [
           {
@@ -199,7 +215,9 @@
     },
     "/products": {
       "get": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "Get all products",
         "responses": {
           "200": {
@@ -214,7 +232,9 @@
         }
       },
       "post": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "Create a new product",
         "parameters": [
           {
@@ -236,7 +256,9 @@
         }
       },
       "put": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "Update an existing product",
         "parameters": [
           {
@@ -265,7 +287,9 @@
         }
       },
       "delete": {
-        "tags": ["products"],
+        "tags": [
+          "products"
+        ],
         "summary": "Delete a product",
         "parameters": [
           {
@@ -285,7 +309,9 @@
     },
     "/users": {
       "get": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "Get all users",
         "responses": {
           "200": {
@@ -300,7 +326,9 @@
         }
       },
       "post": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "Create a new user",
         "parameters": [
           {
@@ -322,7 +350,9 @@
         }
       },
       "put": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "Update an existing user",
         "parameters": [
           {
@@ -351,7 +381,9 @@
         }
       },
       "delete": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "Delete a user",
         "parameters": [
           {
@@ -398,7 +430,11 @@
         },
         "status": {
           "type": "string",
-          "enum": ["pending", "completed", "cancelled"],
+          "enum": [
+            "pending",
+            "completed",
+            "cancelled"
+          ],
           "default": "pending"
         },
         "order_date": {
@@ -436,7 +472,11 @@
         },
         "status": {
           "type": "string",
-          "enum": ["public", "private", "archive"],
+          "enum": [
+            "public",
+            "private",
+            "archive"
+          ],
           "default": "public"
         },
         "created_date": {
@@ -494,7 +534,11 @@
         },
         "status": {
           "type": "string",
-          "enum": ["deleted", "active", "blocked"],
+          "enum": [
+            "deleted",
+            "active",
+            "blocked"
+          ],
           "default": "active"
         },
         "loyalityLevel": {
@@ -503,7 +547,12 @@
         },
         "role": {
           "type": "string",
-          "enum": ["user", "moderator", "administrator", "owner"],
+          "enum": [
+            "user",
+            "moderator",
+            "administrator",
+            "owner"
+          ],
           "default": "user"
         },
         "created_date": {
