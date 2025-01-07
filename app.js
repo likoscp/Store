@@ -5,13 +5,20 @@ const bodyParser = require('body-parser');
 const productRoutes = require('./routes/Products');
 const userRoutes = require('./routes/Users');
 const orderRoutes = require('./routes/Orders');
+const path = require('path');
 
 const app = express();
 const PORT = 3000;
 
 app.use(bodyParser.json());
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
+app.use('/Swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/Products', productRoutes);
 app.use('/Users', userRoutes);
 app.use('/Orders', orderRoutes);

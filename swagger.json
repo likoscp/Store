@@ -1,0 +1,60 @@
+{
+    "swagger": "2.0",
+    "info": {
+    "version": "1.0.0",
+    "title": "Store API",
+    "description": "API for managing products, orders and users."
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": ["http"],
+    "paths": {
+    "/products": {
+    "get": {
+    "summary": "Get all products",
+    "responses": {
+    "200": {
+    "description": "List of products"
+    }
+    }
+    },
+    "post": {
+    "summary": "Create product",
+    "parameters": [
+    {
+    "in": "body",
+    "name": "body",
+    "required": true,
+    "schema": {
+    "$ref": "#/definitions/Product"
+    }
+    }
+    ],
+    "responses": {
+    "200": {
+    "description": "Product created"
+    }
+    }
+    }
+    }
+    },
+    "definitions": { 
+    "Product": {
+     "type": "object",
+     "properties": {
+     "name": {
+     "type": "string"
+     },
+     "price": {
+     "type": "number"
+     },
+     "stock": {
+     "type": "integer"
+     },
+     "category": {
+     "type": "string"
+     }
+     }
+     }
+     }
+    }
