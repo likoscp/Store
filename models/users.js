@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
   address: { type: String, required: true },
   status: { type: String, enum: ['deleted', 'active', 'blocked'], default: 'active' },
   loyalityLevel: { type: Number, default: '1', required: true },
-  role: { type: String, enum: ['user', 'moderator', 'administrator', 'owner'], default: 'user' },
+  role: { type: String, enum: ['user', 'moderator', 'administrator', 'owner', 'supplier', 'B2B', 'employer'], default: 'user' },
   created_date: { type: Date, default: Date.now }
 });
 

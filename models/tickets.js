@@ -18,9 +18,6 @@ const TicketSchema = new mongoose.Schema({
             comments: { type: String, required: true },
             date_of_comments: { type: Date, default: Date.now }
         },],
-
-    created_date: { type: Date, default: Date.now },
-    creatorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     attachment: [{ type: String, required: true }]
 });
 
