@@ -21,6 +21,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res) => {
+  try {
+    const post = await Post .findById(req.params.id);
+    res.status(200).json(post );
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.put('/:id', async (req, res) => {
   try {
     const post = await Post .findByIdAndUpdate(req.params.id, req.body, { new: true });

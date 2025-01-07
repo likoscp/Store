@@ -21,6 +21,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res) => {
+  try {
+    const order = await Order .findById(req.params.id);
+    res.status(200).json(order );
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.put('/:id', async (req, res) => {
   try {
     const order = await Order .findByIdAndUpdate(req.params.id, req.body, { new: true });
