@@ -2,9 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const productRoutes = require('./routes/products');
-const userRoutes = require('./routes/users');
-const orderRoutes = require('./routes/orders');
+const productRoutes = require('./routes/Products');
+const userRoutes = require('./routes/Users');
+const orderRoutes = require('./routes/Orders');
 
 const app = express();
 const PORT = 3000;
@@ -12,9 +12,9 @@ const PORT = 3000;
 app.use(bodyParser.json());
 
 
-app.use('/products', productRoutes);
-app.use('/users', userRoutes);
-app.use('/orders', orderRoutes);
+app.use('/Products', productRoutes);
+app.use('/Users', userRoutes);
+app.use('/Orders', orderRoutes);
 
 mongoose.connect('mongodb://localhost:27017/grocery_store', {
   useNewUrlParser: true,
