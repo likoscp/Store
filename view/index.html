@@ -4,12 +4,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store</title>
     <link rel="stylesheet" href="/style.css">
+    <title>Main Page</title>
 </head>
 
 <body>
-    <a href="http://localhost:3000/swagger/#/default">Swagger</a>
+    <div class="container">
+        <h1>API</h1>
+
+        <div class="button-group">
+            <h3>Orders</h3>
+            <button onclick="sendRequest('/Orders', 'GET')">Get All Orders</button>
+            <button onclick="sendRequest('/Orders', 'POST')">Create Order</button>
+            <button onclick="sendRequest('/Orders/:id', 'GET')">Get Order by ID</button>
+            <button onclick="sendRequest('/Orders/:id', 'PUT')">Update Order</button>
+            <button onclick="sendRequest('/Orders/:id', 'DELETE')">Delete Order</button>
+        </div>
+
+        <div class="button-group">
+            <h3>Users</h3>
+            <button onclick="sendRequest('/Products', 'GET')">Get All Products</button>
+            <button onclick="sendRequest('/Products', 'POST')">Create Product</button>
+            <button onclick="sendRequest('/Products/:id', 'GET')">Get Product by ID</button>
+            <button onclick="sendRequest('/Products/:id', 'PUT')">Update Product</button>
+            <button onclick="sendRequest('/Products/:id', 'DELETE')">Delete Product</button>
+        </div>
+
+        <div class="button-group">
+            <h3>Posts</h3>
+            <button onclick="sendRequest('/Posts', 'GET')">Get All Posts</button>
+            <button onclick="sendRequest('/Posts', 'POST')">Create Post</button>
+            <button onclick="sendRequest('/Posts/:id', 'GET')">Get Post by ID</button>
+            <button onclick="sendRequest('/Posts/:id', 'PUT')">Update Post</button>
+            <button onclick="sendRequest('/Posts/:id', 'DELETE')">Delete Order</button>
+        </div>
+
+        <div class="button-group">
+            <h3>Tickets</h3>
+            <button onclick="sendRequest('/Tickets', 'GET')">Get All Tickets</button>
+            <button onclick="sendRequest('/Tickets', 'POST')">Create Ticket</button>
+            <button onclick="sendRequest('/Tickets/:id', 'GET')">Get Ticket by ID</button>
+            <button onclick="sendRequest('/Tickets/:id', 'PUT')">Update Ticket</button>
+            <button onclick="sendRequest('/Tickets/:id', 'DELETE')">Delete Order</button>
+        </div>
+
+        <div class="button-group">
+            <h3>Products</h3>
+            <button onclick="sendRequest('/Products', 'GET')">Get All Products</button>
+            <button onclick="sendRequest('/Products', 'POST')">Create Product</button>
+            <button onclick="sendRequest('/Products/:id', 'GET')">Get Product by ID</button>
+            <button onclick="sendRequest('/Products/:id', 'PUT')">Update Product</button>
+            <button onclick="sendRequest('/Products/:id', 'DELETE')">Delete Order</button>
+        </div>
+
+        <div id="results" class="results"></div>
+    </div>
+
+    <script>
+        async function sendRequest(endpoint, method) {
+            const id = prompt("Enter ID if required (leave blank for none):");
+            const url = id ? endpoint.replace(':id', id) : endpoint;
+
+            let body = null;
+            if (method === 'POST' || method === 'PUT') {
+                const data = prompt("Enter JSON data for request body:");
+                body = JSON.parse(data || "{}");
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: body ? JSON.stringify(body) : null,
+                });
+
+                const result = await response.json();
+                document.getElementById('results').textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                document.getElementById('results').textContent = `Error: ${error.message}`;
+            }
+        }
+    </script>
 </body>
 
 </html>
