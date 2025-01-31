@@ -7,10 +7,11 @@ const userRoutes = require('./routes/Users');
 const orderRoutes = require('./routes/Orders');
 const postRoutes = require('./routes/Posts');
 const ticketRoutes = require('./routes/Tickets');
+const messageRoutes = require('./routes/Messages');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = 4000;
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -25,6 +26,7 @@ app.use('/Products', productRoutes);
 app.use('/Users', userRoutes);
 app.use('/Orders', orderRoutes);
 app.use('/Tickets', ticketRoutes);
+app.use('/Messages', messageRoutes);
 app.use('/Posts', postRoutes);
 
 mongoose.connect('mongodb://localhost:27017/grocery_store', {

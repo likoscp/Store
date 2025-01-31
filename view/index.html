@@ -11,6 +11,14 @@
 <body>
     <div class="container">
         <h1>API</h1>
+        <div class="button-group">
+            <h3>Messages</h3>
+            <button onclick="sendRequest('/Messages', 'GET')">Get All Messages</button>
+            <button onclick="sendRequest('/Messages', 'POST')">Create Message</button>
+            <button onclick="sendRequest('/Messages/:id', 'GET')">Get Message by ID</button>
+            <button onclick="sendRequest('/Messages/:id', 'PUT')">Update Message</button>
+            <button onclick="sendRequest('/Messages/:id', 'DELETE')">Delete Message</button>
+        </div>
 
         <div class="button-group">
             <h3>Orders</h3>
@@ -23,11 +31,11 @@
 
         <div class="button-group">
             <h3>Users</h3>
-            <button onclick="sendRequest('/Products', 'GET')">Get All Products</button>
-            <button onclick="sendRequest('/Products', 'POST')">Create Product</button>
-            <button onclick="sendRequest('/Products/:id', 'GET')">Get Product by ID</button>
-            <button onclick="sendRequest('/Products/:id', 'PUT')">Update Product</button>
-            <button onclick="sendRequest('/Products/:id', 'DELETE')">Delete Product</button>
+            <button onclick="sendRequest('/Users', 'GET')">Get All Users</button>
+            <button onclick="sendRequest('/Users', 'POST')">Create User</button>
+            <button onclick="sendRequest('/Users/:id', 'GET')">Get User by ID</button>
+            <button onclick="sendRequest('/Users/:id', 'PUT')">Update User</button>
+            <button onclick="sendRequest('/Users/:id', 'DELETE')">Delete User</button>
         </div>
 
         <div class="button-group">
