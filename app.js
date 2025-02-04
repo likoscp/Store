@@ -8,6 +8,7 @@ const orderRoutes = require('./routes/Orders');
 const postRoutes = require('./routes/Posts');
 const ticketRoutes = require('./routes/Tickets');
 const messageRoutes = require('./routes/Messages');
+const AuthRoutes = require('./routes/Authentication');
 const path = require('path');
 
 const app = express();
@@ -28,8 +29,9 @@ app.use('/Orders', orderRoutes);
 app.use('/Tickets', ticketRoutes);
 app.use('/Messages', messageRoutes);
 app.use('/Posts', postRoutes);
+app.use('/Auth', AuthRoutes);
 
-mongoose.connect('mongodb://localhost:27017/grocery_store', {
+mongoose.connect('mongodb+srv://SabinaMongoDB:LikoMongoNode@cluster0.ffv0e.mongodb.net/Store', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
