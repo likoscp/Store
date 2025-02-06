@@ -4,6 +4,8 @@ const User = require('../models/users');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {secret}  = require('../config');
+const middlewareAuth = require('./middlewareAuth');
+const roleMiddleware = require('./RoleMiddleware');
 
 const generateAccessToken = (id, role) => {
     const payload = {

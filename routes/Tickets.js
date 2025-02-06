@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Ticket = require('../models/tickets');
+const middlewareAuth = require('./middlewareAuth');
+const roleMiddleware = require('./RoleMiddleware');
 
-router.post('/', async (req, res) => {
+router.post('/', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
     try {
         const ticket = new Ticket(req.body);
         await ticket.save();
@@ -12,7 +14,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
     try {
         const tickets = await Ticket.find();
         res.status(200).json(tickets);
@@ -21,7 +23,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
     try {
         const ticket = await Ticket.findById(req.params.id);
         res.status(200).json(ticket);
@@ -30,7 +32,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
     try {
         const ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.status(200).json(ticket);
@@ -39,7 +41,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
     try {
         await Ticket.findByIdAndDelete(req.params.id);
         res.status(200).json({ message: 'Ticket deleted' });

@@ -31,10 +31,7 @@ app.use('/Messages', messageRoutes);
 app.use('/Posts', postRoutes);
 app.use('/Auth', AuthRoutes);
 
-mongoose.connect('mongodb+srv://SabinaMongoDB:LikoMongoNode@cluster0.ffv0e.mongodb.net/Store', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect('mongodb+srv://SabinaMongoDB:LikoMongoNode@cluster0.ffv0e.mongodb.net/Store');
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/users');
+const middlewareAuth = require('./middlewareAuth');
+const roleMiddleware = require('./RoleMiddleware');
 
-router.post('/', async (req, res) => {
+router.post('/', roleMiddleware(["moderator", "administrator", "owner"]), async (req, res) => {
   try {
     const user = new User(req.body);
     await user.save();
@@ -12,7 +14,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', roleMiddleware(["moderator", "administrator", "owner"]), async (req, res) => {
   try {
     const users = await User.find();
     res.status(200).json(users);
@@ -21,7 +23,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     res.status(200).json(user);
@@ -30,7 +32,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', roleMiddleware(["moderator", "administrator", "owner"]), async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).json(user);
@@ -39,7 +41,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', roleMiddleware(["moderator", "administrator", "owner"]), async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: 'User deleted' });
