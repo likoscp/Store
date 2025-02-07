@@ -3,9 +3,10 @@ const router = express.Router();
 const User = require('../models/users');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {secret}  = require('../config');
+const { secret }  = require('../config');
 const middlewareAuth = require('./middlewareAuth');
 const roleMiddleware = require('./RoleMiddleware');
+const path = require('path');
 
 const generateAccessToken = (id, role) => {
     const payload = {
@@ -29,6 +30,10 @@ router.post('/sign-up', async (req, res) => {
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
+});
+
+router.get('/sign-in', (req, res) => {
+    res.sendFile(path.join(__dirname, '../view/login.html')); 
 });
 
 router.post('/sign-in', async (req, res) => {

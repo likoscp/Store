@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/users');
 const middlewareAuth = require('./middlewareAuth');
 const roleMiddleware = require('./RoleMiddleware');
-
+const paginate = require('../middleware/pagination');
 router.post('/', roleMiddleware(["moderator", "administrator", "owner"]), async (req, res) => {
   try {
     const user = new User(req.body);
@@ -14,14 +14,7 @@ router.post('/', roleMiddleware(["moderator", "administrator", "owner"]), async 
   }
 });
 
-router.get('/', roleMiddleware(["moderator", "administrator", "owner"]), async (req, res) => {
-  try {
-    const users = await User.find();
-    res.status(200).json(users);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.get('/', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), paginate(User));
 
 router.get('/:id', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
   try {

@@ -3,7 +3,7 @@ const router = express.Router();
 const Ticket = require('../models/tickets');
 const middlewareAuth = require('./middlewareAuth');
 const roleMiddleware = require('./RoleMiddleware');
-
+const paginate = require('../middleware/pagination');
 router.post('/', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
     try {
         const ticket = new Ticket(req.body);
@@ -14,14 +14,7 @@ router.post('/', roleMiddleware(["moderator", "administrator", "owner", "supplie
     }
 });
 
-router.get('/', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
-    try {
-        const tickets = await Ticket.find();
-        res.status(200).json(tickets);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+router.get('/', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), paginate(Ticket));
 
 router.get('/:id', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
     try {

@@ -3,7 +3,7 @@ const router = express.Router();
 const Message = require('../models/messages');
 const middlewareAuth = require('./middlewareAuth');
 const roleMiddleware = require('./RoleMiddleware');
-
+const paginate = require('../middleware/pagination');
 router.post('/', async (req, res) => {
   try {
     const message = new Message(req.body);
@@ -14,14 +14,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
-  try {
-    const messages = await Message.find();
-    res.status(200).json(messages);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.get('/', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), paginate(Message));
 
 router.get('/:id', async (req, res) => {
   try {
