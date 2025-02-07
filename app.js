@@ -19,6 +19,8 @@ const PORT = 4000;
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
+app.use(express.static('script'));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 

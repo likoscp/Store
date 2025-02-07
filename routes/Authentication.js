@@ -36,6 +36,10 @@ router.get('/sign-in', (req, res) => {
     res.sendFile(path.join(__dirname, '../view/login.html')); 
 });
 
+router.get('/sign-up', (req, res) => {
+    res.sendFile(path.join(__dirname, '../view/register.html')); 
+});
+
 router.post('/sign-in', async (req, res) => {
     try {
         const { email, password } = req.body;

@@ -14,7 +14,7 @@ router.post('/', roleMiddleware(["moderator", "administrator", "owner", "supplie
   }
 });
 
-router.get('/', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), paginate(Product));
+router.get('/', paginate(Product));
 
 router.get('/:id', async (req, res) => {
   try {

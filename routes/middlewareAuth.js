@@ -10,13 +10,13 @@ module.exports = function (req, res, next) {
     try {
         const token = req.headers.authorization?.split(' ')[1]; 
         if (!token) {
-            return res.status(401).json({ error: "Unauthorized" });
+            return res.redirect('/Auth/sign-in');
         }        
         const decodedData = jwt.verify(token, secret);
         req.user = decodedData;
         next();
     } catch (err) {
         console.log(err);
-        return res.status(401).json({ error: "Invalid token" });
+        return res.redirect('/Auth/sign-in');
     }
 };

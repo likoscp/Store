@@ -1,26 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styleLogin.css">
-    <script src="/login.js"></script>
-    <title>Login</title>
-    
-</head>
-<body>
-    <div class="auth-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
-        <div id="errorMessage" class="error-message"></div>
-    </div>
-
-<script>document.getElementById('loginForm').addEventListener('submit', async function(event) {
+document.getElementById('loginForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
     const email = document.getElementById('email').value;
@@ -49,6 +27,4 @@
     } catch (error) {
         document.getElementById('errorMessage').textContent = 'An error occurred. Please try again.';
     }
-});</script>
-</body>
-</html>
+});
