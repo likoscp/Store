@@ -12,4 +12,6 @@ const OrderSchema = new mongoose.Schema({
   order_date: { type: Date, default: Date.now }
 });
 
+OrderSchema.index({ userId: 1, status: 1 });
+
 module.exports = mongoose.model('Order', OrderSchema);

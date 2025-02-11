@@ -43,4 +43,22 @@ router.delete('/:id', roleMiddleware(["moderator", "administrator", "owner", "su
   }
 });
 
+router.get('/user/:id', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
+  try {
+    const order = await Order.find({ userId: req.params.id});
+    res.status(200).json(order);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/userstatus/:id', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
+  try {
+    const order = await Order.find({ userId: req.params.id, status: 'pending' });
+    res.status(200).json(order);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
