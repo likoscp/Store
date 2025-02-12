@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/products');
-const middlewareAuth = require('./middlewareAuth');
-const roleMiddleware = require('./RoleMiddleware');
+const middlewareAuth = require('../middleware/middlewareAuth');
+const roleMiddleware = require('../middleware/RoleMiddleware');
 const paginate = require('../middleware/pagination');
 router.post('/', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
   try {

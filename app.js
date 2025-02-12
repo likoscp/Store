@@ -2,8 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const middlewareAuth = require('./routes/middlewareAuth');
-const roleMiddleware = require('./routes/RoleMiddleware');
+const middlewareAuth = require('./middleware/middlewareAuth');
+const roleMiddleware = require('./middleware/RoleMiddleware');
 
 const productRoutes = require('./routes/Products');
 const userRoutes = require('./routes/Users');

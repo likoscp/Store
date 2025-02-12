@@ -6,6 +6,14 @@
     "title": "Store API"
   },
   "host": "localhost:4000",
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter 'Bearer <your_token>'"
+    }
+  },
   "tags": [
     {
       "name": "orders",
@@ -22,6 +30,11 @@
     {
       "name": "users",
       "description": "User management"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
     }
   ],
   "paths": {
