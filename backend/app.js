@@ -29,7 +29,7 @@ const swaggerDocument = require('./swagger.json');
 
 const cors = require("cors"); 
 app.use(cors({
-  origin: "http://localhost:3000", 
+  origin: "http://store-chi-tan.vercel.app:3000", 
   credentials: true 
 }));
 
@@ -52,7 +52,7 @@ db.once('open', () => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://store-chi-tan.vercel.app:${PORT}`);
 });
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/view/index.html'));
