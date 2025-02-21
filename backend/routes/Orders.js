@@ -16,6 +16,7 @@ router.post('/',  async (req, res) => {
 });
 router.get('/', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), paginate(Order));
 
+
 router.get('/:id', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);

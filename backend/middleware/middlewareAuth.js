@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const path = require('path')
 const { secret } = require('../config')
 
 module.exports = function (req, res, next) {
@@ -10,13 +9,13 @@ module.exports = function (req, res, next) {
     try {
         const token = req.headers.authorization?.split(' ')[1]; 
         if (!token) {
-            return res.redirect('/Auth/sign-in');
+            return res.status(401).json({ message: "Unauthorized" }); 
         }        
         const decodedData = jwt.verify(token, secret);
         req.user = decodedData;
         next();
     } catch (err) {
         console.log(err);
-        return res.redirect('/Auth/sign-in');
+        return res.status(401).json({ message: "Unauthorized" }); 
     }
 };
