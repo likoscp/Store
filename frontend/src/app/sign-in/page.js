@@ -21,8 +21,7 @@ export default function SignIn() {
             localStorage.setItem("token", response.data.token);
             console.log("Token saved:", response.data.token);
 
-
-            router.push("/orders");
+            router.push("/");
         } catch (err) {
             setError("Invalid data!");
             console.error("Error sign-in:", err);
