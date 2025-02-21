@@ -1,21 +1,25 @@
-"use client";
+"use client"; 
+
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation"; 
 
 export default function Orders() {
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [isClient, setIsClient] = useState(false); 
+    const [currentPage, setCurrentPage] = useState(1); 
 
     const router = useRouter();
+    const searchParams = useSearchParams(); 
 
     useEffect(() => {
-        setIsClient(true);
-    }, []);
+        const pageFromUrl = searchParams.get("page");
+        if (pageFromUrl) {
+            setCurrentPage(Number(pageFromUrl)); 
+        }
+    }, [searchParams]);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -52,19 +56,12 @@ export default function Orders() {
             setLoading(false);
         };
 
-        if (isClient) {
-            fetchOrders(); 
-        }
-    }, [currentPage, isClient]);
-
+        fetchOrders(); 
+    }, [currentPage]); 
     const goToPage = (newPage) => {
         setCurrentPage(newPage); 
-        router.push(`/orders?page=${newPage}`);
+        router.push(`/orders?page=${newPage}`); 
     };
-
-    if (!isClient) {
-        return null;
-    }
 
     return (
         <div>
