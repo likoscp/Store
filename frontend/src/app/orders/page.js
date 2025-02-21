@@ -1,6 +1,6 @@
 "use client"; 
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation"; 
 
@@ -19,7 +19,7 @@ export default function Orders() {
         if (pageFromUrl) {
             setCurrentPage(Number(pageFromUrl)); 
         }
-    }, [searchParams]);
+    }, [searchParams]); 
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -58,42 +58,45 @@ export default function Orders() {
 
         fetchOrders(); 
     }, [currentPage]); 
+
     const goToPage = (newPage) => {
-        setCurrentPage(newPage); 
+        setCurrentPage(newPage);
         router.push(`/orders?page=${newPage}`); 
     };
 
     return (
-        <div>
-            <h1>Order List</h1>
-            {error && <p>{error}</p>}
-            {loading ? (
-                <p>Loading...</p>
-            ) : orders.length === 0 ? (
-                <p>No data.</p>
-            ) : (
-                <ul>
-                    {orders.map((order) => (
-                        <li key={order._id}>ID: {order._id} - Status: {order.status}</li>
-                    ))}
-                </ul>
-            )}
-
+        <Suspense fallback={<div>Loading...</div>}>
             <div>
-                <button
-                    onClick={() => goToPage(currentPage - 1)}
-                    disabled={currentPage <= 1}
-                >
-                    Previous
-                </button>
-                <span>Page {currentPage} of {totalPages}</span>
-                <button
-                    onClick={() => goToPage(currentPage + 1)}
-                    disabled={currentPage >= totalPages}
-                >
-                    Next
-                </button>
+                <h1>Order List</h1>
+                {error && <p>{error}</p>}
+                {loading ? (
+                    <p>Loading...</p>
+                ) : orders.length === 0 ? (
+                    <p>No data.</p>
+                ) : (
+                    <ul>
+                        {orders.map((order) => (
+                            <li key={order._id}>ID: {order._id} - Status: {order.status}</li>
+                        ))}
+                    </ul>
+                )}
+
+                <div>
+                    <button
+                        onClick={() => goToPage(currentPage - 1)}
+                        disabled={currentPage <= 1}
+                    >
+                        Previous
+                    </button>
+                    <span>Page {currentPage} of {totalPages}</span>
+                    <button
+                        onClick={() => goToPage(currentPage + 1)}
+                        disabled={currentPage >= totalPages}
+                    >
+                        Next
+                    </button>
+                </div>
             </div>
-        </div>
+        </Suspense>
     );
 }
