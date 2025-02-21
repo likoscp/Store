@@ -34,7 +34,7 @@ function OrdersContent() {
             }
 
             try {
-                const response = await axios.get(`http://store-chi-tan.vercel.app:4000/orders?page=${currentPage}`, {
+                const response = await axios.get(`http://localhost:4000/orders?page=${currentPage}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

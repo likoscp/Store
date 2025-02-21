@@ -42,7 +42,6 @@ app.use('/Messages', middlewareAuth, messageRoutes);
 app.use('/Posts', middlewareAuth, postRoutes);
 app.use('/Auth', AuthRoutes);
 
-
 mongoose.connect('mongodb+srv://SabinaMongoDB:LikoMongoNode@cluster0.ffv0e.mongodb.net/Store');
 
 const db = mongoose.connection;
@@ -52,7 +51,7 @@ db.once('open', () => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://store-chi-tan.vercel.app:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/view/index.html'));
