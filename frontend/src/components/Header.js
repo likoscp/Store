@@ -37,6 +37,9 @@ const Header = () => {
           <li>
             <Link href="/cart">Cart</Link>
           </li>
+          <li>
+            <Link href="/chats">Chats</Link>
+          </li>
           <li id="firstList">
             <Link id="account" className="account" href="/account">
               Account

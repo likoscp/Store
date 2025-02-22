@@ -40,3 +40,7 @@ a {
     color-scheme: dark;
   }
 }
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
