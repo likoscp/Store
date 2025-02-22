@@ -16,9 +16,15 @@ function ProductsContent() {
         priceRange: [0, 1000],
         tags: [],
     });
-
+    const [quantities, setQuantities] = useState({});
+    const [token, setToken] = useState(null); 
     const router = useRouter();
     const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        setToken(storedToken);
+    }, []);
 
     useEffect(() => {
         const pageFromUrl = searchParams.get("page");
@@ -33,18 +39,8 @@ function ProductsContent() {
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true);
-            const token = localStorage.getItem("token");
-
-            if (!token) {
-                setError("Token not found, please sign in.");
-                window.location.href = '/sign-in';
-                setLoading(false);
-                return;
-            }
-
             try {
                 const response = await axios.get(`http://localhost:4000/products`, {
-                    //поменять на серч, сейчас заглушка стоит
                     params: {
                         page: currentPage,
                         search: filters.searchQuery,
@@ -53,9 +49,7 @@ function ProductsContent() {
                         maxPrice: filters.priceRange[1],
                         tags: filters.tags.join(","),
                     },
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    headers: token ? { Authorization: `Bearer ${token}` } : {},
                 });
 
                 if (Array.isArray(response.data.data)) {
@@ -65,21 +59,17 @@ function ProductsContent() {
                     setError("Invalid response structure.");
                 }
             } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    window.location.href = '/sign-in';
-                } else {
-                    setError("Error loading products: " + error.message);
-                }
+                setError("Error loading products: " + error.message);
             }
             setLoading(false);
         };
 
         fetchProducts();
-    }, [currentPage, filters]);
+    }, [currentPage, filters, token]);
 
     const goToPage = (newPage) => {
         setCurrentPage(newPage);
-        router.push(`/products?page=${newPage}&search=${filters.searchQuery}&category=${filters.category}`);
+        router.push(`/search?page=${newPage}&tags=${filters.tags}&category=${filters.category}`);
     };
 
     const handleFilterChange = (e) => {
@@ -95,34 +85,48 @@ function ProductsContent() {
                 ? prev.tags.filter((t) => t !== tag)
                 : [...prev.tags, tag],
         }));
-        setCurrentPage(1); 
+        setCurrentPage(1);
+    };
+
+    const handleQuantityChange = (productId, quantity) => {
+        setQuantities((prev) => ({
+            ...prev,
+            [productId]: quantity,
+        }));
+    };
+
+    const handleAddToCart = (productId) => {
+        const quantity = quantities[productId] || 1;
+        console.log(`Added product ${productId} to cart with quantity ${quantity}`);
+       
     };
 
     return (
-        <div>
-            <h1>Search</h1>
+        <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold text-center my-4">Search Products</h1>
 
-            <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <input
                     type="text"
                     name="searchQuery"
                     placeholder="Search by name..."
                     value={filters.searchQuery}
                     onChange={handleFilterChange}
+                    className="p-2 border border-gray-300 rounded"
                 />
                 <select
                     name="category"
                     value={filters.category}
                     onChange={handleFilterChange}
+                    className="p-2 border border-gray-300 rounded"
                 >
                     <option value="">All Categories</option>
-                    {/* поменять категории потом, мб через гет олл категории */}
                     <option value="Movies">Movies</option>
                     <option value="Home">Home</option>
                     <option value="Books">Books</option>
                 </select>
-                <div>
-                    <label>Price Range:</label>
+                <div className="flex flex-col">
+                    <label className="mb-2">Price Range: ${filters.priceRange[1]}</label>
                     <input
                         type="range"
                         min="0"
@@ -134,55 +138,80 @@ function ProductsContent() {
                                 priceRange: [prev.priceRange[0], Number(e.target.value)],
                             }))
                         }
+                        className="w-full"
                     />
-                    <span>${filters.priceRange[1]}</span>
                 </div>
-                <div>
-                    <label>Tags:</label>
-                    {["Incredible", "Small", "Fantasy", "Adventure"].map((tag) => (
-                        <label key={tag}>
-                            <input
-                                type="checkbox"
-                                checked={filters.tags.includes(tag)}
-                                onChange={() => handleTagChange(tag)}
-                            />
-                            {tag}
-                        </label>
-                    ))}
+                <div className="flex flex-col">
+                    <label className="mb-2">Tags:</label>
+                    <div className="flex flex-wrap gap-2">
+                        {["Incredible", "Small", "Fantasy", "Adventure"].map((tag) => (
+                            <label key={tag} className="inline-flex items-center">
+                                <input
+                                    type="checkbox"
+                                    checked={filters.tags.includes(tag)}
+                                    onChange={() => handleTagChange(tag)}
+                                    className="form-checkbox h-5 w-5 text-blue-600"
+                                />
+                                <span className="ml-2">{tag}</span>
+                            </label>
+                        ))}
+                    </div>
                 </div>
             </div>
 
-            {error && <p>{error}</p>}
+            {error && <p className="text-red-500 text-center">{error}</p>}
             {loading ? (
-                <p>Loading...</p>
+                <p className="text-center">Loading...</p>
             ) : products.length === 0 ? (
-                <p>No data.</p>
+                <p className="text-center">No data.</p>
             ) : (
-                <ul>
+                <ul className="space-y-4">
                     {products.map((product) => (
-                        <li key={product._id}>
-                            <br />
-                            ID: {product._id} <br />
-                            Name: {product.name} <br />
-                            Price: ${product.price.toFixed(2)} <br />
-                            Category: {product.category} <br />
-                            Tags: {product.tags.join(", ")} <br />
+                        <li key={product._id} className="p-4 border border-gray-200 rounded-lg shadow">
+                            <div className="space-y-2">
+                                <p><strong>ID:</strong> {product._id}</p>
+                                <p><strong>Name:</strong> {product.name}</p>
+                                <p><strong>Price:</strong> ${product.price.toFixed(2)}</p>
+                                <p><strong>Category:</strong> {product.category}</p>
+                                <p><strong>Tags:</strong> {product.tags.join(", ")}</p>
+                                {token && (  
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value={quantities[product._id] || 1}
+                                            onChange={(e) =>
+                                                handleQuantityChange(product._id, parseInt(e.target.value))
+                                            }
+                                            className="w-20 p-2 border border-gray-300 rounded"
+                                        />
+                                        <button
+                                            onClick={() => handleAddToCart(product._id)}
+                                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                        >
+                                            Add to Cart
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         </li>
                     ))}
                 </ul>
             )}
 
-            <div>
+            <div className="flex justify-center items-center mt-6">
                 <button
                     onClick={() => goToPage(currentPage - 1)}
                     disabled={currentPage <= 1}
+                    className="px-4 py-2 mx-1 border rounded bg-blue-500 text-white disabled:bg-gray-300"
                 >
                     Previous
                 </button>
-                <span>Page {currentPage} of {totalPages}</span>
+                <span className="mx-4">Page {currentPage} of {totalPages}</span>
                 <button
                     onClick={() => goToPage(currentPage + 1)}
                     disabled={currentPage >= totalPages}
+                    className="px-4 py-2 mx-1 border rounded bg-blue-500 text-white disabled:bg-gray-300"
                 >
                     Next
                 </button>
@@ -193,7 +222,7 @@ function ProductsContent() {
 
 export default function Products() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className="text-center">Loading...</div>}>
             <ProductsContent />
         </Suspense>
     );
