@@ -30,7 +30,7 @@ export default function SignIn() {
 
     return (
         <div style={{ width: "300px", margin: "0 auto", padding: "20px" }}>
-            <h2>Войти</h2>
+            <h2>Sigh in</h2><br/>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Email</label>
