@@ -42,8 +42,8 @@ app.use("/Users", middlewareAuth, userRoutes);
 app.use("/Orders", middlewareAuth, orderRoutes);
 app.use("/Tickets", middlewareAuth, ticketRoutes);
 app.use("/Messages", middlewareAuth, messageRoutes);
-app.use("/Posts", middlewareAuth, postRoutes);
-app.use("/Filter", middlewareAuth, filterRoutes);
+app.use("/Posts", postRoutes);
+app.use("/Filter", filterRoutes);
 app.use("/Auth", AuthRoutes);
 
 mongoose.connect(

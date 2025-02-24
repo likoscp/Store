@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Product = require("../models/Product");
+const mongoose = require("mongoose");
+const Product = mongoose.models.Product;
+const paginate = require("../middleware/pagination");
 
 router.get("/", async (req, res) => {
   try {
@@ -19,8 +21,7 @@ router.get("/", async (req, res) => {
       filter.tags = { $all: tagsArray };
     }
 
-    const products = await Product.find(filter);
-    res.status(200).json(products);
+    paginate(Product)(req, res, filter);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

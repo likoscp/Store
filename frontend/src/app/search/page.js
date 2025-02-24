@@ -10,7 +10,7 @@ function ProductsContent() {
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filters, setFilters] = useState({
+  const [filter, setFilter] = useState({
     searchQuery: "",
     category: "",
     priceRange: [0, 1000],
@@ -33,23 +33,23 @@ function ProductsContent() {
 
     if (pageFromUrl) setCurrentPage(Number(pageFromUrl));
     if (searchQueryFromUrl)
-      setFilters((prev) => ({ ...prev, searchQuery: searchQueryFromUrl }));
+      setFilter((prev) => ({ ...prev, searchQuery: searchQueryFromUrl }));
     if (categoryFromUrl)
-      setFilters((prev) => ({ ...prev, category: categoryFromUrl }));
+      setFilter((prev) => ({ ...prev, category: categoryFromUrl }));
   }, [searchParams]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:4000/filters`, {
+        const response = await axios.get(`http://localhost:4000/filter`, {
           params: {
             page: currentPage,
-            search: filters.searchQuery,
-            category: filters.category,
-            minPrice: filters.priceRange[0],
-            maxPrice: filters.priceRange[1],
-            tags: filters.tags.join(","),
+            search: filter.searchQuery,
+            category: filter.category,
+            minPrice: filter.priceRange[0],
+            maxPrice: filter.priceRange[1],
+            tags: filter.tags.join(","),
           },
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
@@ -67,23 +67,23 @@ function ProductsContent() {
     };
 
     fetchProducts();
-  }, [currentPage, filters, token]);
+  }, [currentPage, filter, token]);
 
   const goToPage = (newPage) => {
     setCurrentPage(newPage);
     router.push(
-      `/search?page=${newPage}&tags=${filters.tags}&category=${filters.category}`
+      `/search?page=${newPage}&tags=${filter.tags}&category=${filter.category}`
     );
   };
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+    setFilter((prev) => ({ ...prev, [name]: value }));
     setCurrentPage(1);
   };
 
   const handleTagChange = (tag) => {
-    setFilters((prev) => ({
+    setFilter((prev) => ({
       ...prev,
       tags: prev.tags.includes(tag)
         ? prev.tags.filter((t) => t !== tag)
@@ -113,13 +113,13 @@ function ProductsContent() {
           type="text"
           name="searchQuery"
           placeholder="Search by name..."
-          value={filters.searchQuery}
+          value={filter.searchQuery}
           onChange={handleFilterChange}
           className="p-2 border border-gray-300 rounded"
         />
         <select
           name="category"
-          value={filters.category}
+          value={filter.category}
           onChange={handleFilterChange}
           className="p-2 border border-gray-300 rounded"
         >
@@ -129,14 +129,14 @@ function ProductsContent() {
           <option value="Books">Books</option>
         </select>
         <div className="flex flex-col">
-          <label className="mb-2">Price Range: ${filters.priceRange[1]}</label>
+          <label className="mb-2">Price Range: ${filter.priceRange[1]}</label>
           <input
             type="range"
             min="0"
             max="1000"
-            value={filters.priceRange[1]}
+            value={filter.priceRange[1]}
             onChange={(e) =>
-              setFilters((prev) => ({
+              setFilter((prev) => ({
                 ...prev,
                 priceRange: [prev.priceRange[0], Number(e.target.value)],
               }))
@@ -151,7 +151,7 @@ function ProductsContent() {
               <label key={tag} className="inline-flex items-center">
                 <input
                   type="checkbox"
-                  checked={filters.tags.includes(tag)}
+                  checked={filter.tags.includes(tag)}
                   onChange={() => handleTagChange(tag)}
                   className="form-checkbox h-5 w-5 text-blue-600"
                 />
