@@ -36,7 +36,7 @@ const Footer = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-grey p-6 rounded-lg shadow-lg w-96">
+          <div className="bg-gray-900 p-6 rounded-lg shadow-lg w-96">
             <span className="absolute top-2 right-4 text-gray-600 text-xl cursor-pointer" onClick={closeModal}>
               &times;
             </span>

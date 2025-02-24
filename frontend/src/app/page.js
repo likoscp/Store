@@ -177,25 +177,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
-          <h2 className="text-3xl font-semibold tracking-tight text-balance text-white sm:text-4xl">
-            Shop smarter. Start exploring our online store today.
-          </h2>
-          <p className="mt-6 text-lg/8 text-pretty text-gray-300">
-            Discover a wide range of products delivered straight to your doorstep. Fast, reliable, and convenient shopping for everyone in Kazakhstan.
-          </p>
-          <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-            <a
-              href="#"
-              className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-xs hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-            >
-              Shop now
-            </a>
-            <a href="#" className="text-sm/6 font-semibold text-white">
-              Learn more <span aria-hidden="true">→</span>
-            </a>
-          </div>
-        </div>
+        
 
       </main>
     </div>
