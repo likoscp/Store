@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 
 function ProductsContent() {
+
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
