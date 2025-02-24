@@ -5,7 +5,6 @@ import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 
 function ProductsContent() {
-
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,12 +30,22 @@ function ProductsContent() {
     const pageFromUrl = searchParams.get("page");
     const searchQueryFromUrl = searchParams.get("search");
     const categoryFromUrl = searchParams.get("category");
+    const minPriceFromUrl = searchParams.get("minPrice");
+    const maxPriceFromUrl = searchParams.get("maxPrice");
+    const tagsFromUrl = searchParams.get("tags");
 
     if (pageFromUrl) setCurrentPage(Number(pageFromUrl));
     if (searchQueryFromUrl)
       setFilter((prev) => ({ ...prev, searchQuery: searchQueryFromUrl }));
     if (categoryFromUrl)
       setFilter((prev) => ({ ...prev, category: categoryFromUrl }));
+    if (minPriceFromUrl && maxPriceFromUrl)
+      setFilter((prev) => ({
+        ...prev,
+        priceRange: [Number(minPriceFromUrl), Number(maxPriceFromUrl)],
+      }));
+    if (tagsFromUrl)
+      setFilter((prev) => ({ ...prev, tags: tagsFromUrl.split(",") }));
   }, [searchParams]);
 
   useEffect(() => {
@@ -46,7 +55,7 @@ function ProductsContent() {
         const response = await axios.get(`http://localhost:4000/filter`, {
           params: {
             page: currentPage,
-            search: filter.searchQuery,
+            name: filter.searchQuery, // Используйте name вместо search
             category: filter.category,
             minPrice: filter.priceRange[0],
             maxPrice: filter.priceRange[1],
@@ -67,13 +76,17 @@ function ProductsContent() {
       setLoading(false);
     };
 
-    fetchProducts();
+    const debounceTimer = setTimeout(() => {
+      fetchProducts();
+    }, 300); // Задержка 300 мс
+
+    return () => clearTimeout(debounceTimer);
   }, [currentPage, filter, token]);
 
   const goToPage = (newPage) => {
     setCurrentPage(newPage);
     router.push(
-      `/search?page=${newPage}&tags=${filter.tags}&category=${filter.category}`
+      `/search?page=${newPage}&search=${filter.searchQuery}&category=${filter.category}&minPrice=${filter.priceRange[0]}&maxPrice=${filter.priceRange[1]}&tags=${filter.tags.join(",")}`
     );
   };
 
@@ -81,6 +94,11 @@ function ProductsContent() {
     const { name, value } = e.target;
     setFilter((prev) => ({ ...prev, [name]: value }));
     setCurrentPage(1);
+
+    // Обновляем URL
+    router.push(
+      `/search?page=1&search=${filter.searchQuery}&category=${filter.category}&minPrice=${filter.priceRange[0]}&maxPrice=${filter.priceRange[1]}&tags=${filter.tags.join(",")}`
+    );
   };
 
   const handleTagChange = (tag) => {
@@ -91,6 +109,11 @@ function ProductsContent() {
         : [...prev.tags, tag],
     }));
     setCurrentPage(1);
+
+    // Обновляем URL
+    router.push(
+      `/search?page=1&search=${filter.searchQuery}&category=${filter.category}&minPrice=${filter.priceRange[0]}&maxPrice=${filter.priceRange[1]}&tags=${filter.tags.join(",")}`
+    );
   };
 
   const handleQuantityChange = (productId, quantity) => {

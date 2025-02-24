@@ -4,10 +4,11 @@ const paginate = (model) => async (req, res, next) => {
         page = Math.max(parseInt(page), 1);
         limit = Math.max(parseInt(limit), 1);
 
-        const totalCount = await model.countDocuments(); 
+        const filter = req.filter || {};
+        const totalCount = await model.countDocuments(filter); 
         const totalPages = Math.ceil(totalCount / limit); 
 
-        const data = await model.find()
+        const data = await model.find(filter)
             .skip((page - 1) * limit)
             .limit(limit);
 
@@ -24,3 +25,4 @@ const paginate = (model) => async (req, res, next) => {
 };
 
 module.exports = paginate;
+
