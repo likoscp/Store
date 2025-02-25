@@ -17,6 +17,4 @@
       }
     ],
     "installCommand": "npm install",
-    "buildCommand": "node app.js", 
-    "startCommand": "node app.js"}
-  
+    "buildCommand": "node app.js"}
