@@ -26,7 +26,7 @@ export default function ConversationPage() {
       }
 
       try {
-        const response = await axios.get(`http://localhost:4000/conversations/${params.id}`, {
+        const response = await axios.get(`http://store-gyhu.vercel.app/conversations/${params.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

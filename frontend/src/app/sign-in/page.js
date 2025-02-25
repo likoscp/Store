@@ -13,7 +13,7 @@ export default function SignIn() {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:4000/Auth/sign-in", {
+            const response = await axios.post("http://store-gyhu.vercel.app/Auth/sign-in", {
                 email,
                 password,
             });

@@ -14,7 +14,7 @@ export default function ProductPage() {
 
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/products/${params.id}`);
+        const response = await fetch(`http://store-gyhu.vercel.app/products/${params.id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch product");
         }

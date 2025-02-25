@@ -53,7 +53,7 @@ function ProductsContent() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:4000/filter`, {
+        const response = await axios.get(`http://store-gyhu.vercel.app/filter`, {
           params: {
             page: currentPage,
             name: filter.searchQuery,
@@ -142,7 +142,7 @@ function ProductsContent() {
     const quantity = quantities[productId] || 1;
 
     try {
-      const response = await fetch(`http://localhost:4000/orders/userstatus/${userId}`, {
+      const response = await fetch(`http://store-gyhu.vercel.app/orders/userstatus/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -168,7 +168,7 @@ function ProductsContent() {
 
         const updatedOrder = { items: updatedItems };
 
-        const updateResponse = await fetch(`http://localhost:4000/orders/${orderId}`, {
+        const updateResponse = await fetch(`http://store-gyhu.vercel.app/orders/${orderId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -187,7 +187,7 @@ function ProductsContent() {
           status: 'pending'
         };
 
-        const createResponse = await fetch('http://localhost:4000/orders', {
+        const createResponse = await fetch('http://store-gyhu.vercel.app/orders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

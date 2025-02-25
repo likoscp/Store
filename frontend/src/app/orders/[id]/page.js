@@ -26,7 +26,7 @@ export default function OrderPage() {
       }
 
       try {
-        const response = await axios.get(`http://localhost:4000/orders/${params.id}`, {
+        const response = await axios.get(`http://store-gyhu.vercel.app/orders/${params.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

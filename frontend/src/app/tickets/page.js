@@ -34,7 +34,7 @@ function TicketsContent() {
             }
 
             try {
-                const response = await axios.get(`http://localhost:4000/tickets?page=${currentPage}`, {
+                const response = await axios.get(`http://store-gyhu.vercel.app/tickets?page=${currentPage}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
