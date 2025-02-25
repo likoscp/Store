@@ -55,8 +55,10 @@ router.get('/user/:id', roleMiddleware(["moderator", "administrator", "owner", "
 
 router.get('/userstatus/:id', roleMiddleware(["moderator", "administrator", "owner", "supplier", "B2B", "employer"]), async (req, res) => {
   try {
-    const order = await Order.find({ userId: req.params.id, status: 'pending' });
-    res.status(200).json(order);
+    const orders = await Order.find({ userId: req.params.id, status: 'pending' })
+      .populate('items.productId', 'name price');
+
+    res.status(200).json(orders);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

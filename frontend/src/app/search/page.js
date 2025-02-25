@@ -124,23 +124,24 @@ function ProductsContent() {
 
 
   const handleAddToCart = async (productId) => {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     if (!token) {
       alert('Please log in to add products to your cart');
       return;
     }
 
     const decodedToken = jwtDecode(token);
-    console.log(decodedToken); 
-    const userId = decodedToken.id; 
+    console.log(decodedToken);
+    const userId = decodedToken.id;
 
     if (!userId) {
       alert('User ID not found in token');
       return;
     }
 
+    const quantity = quantities[productId] || 1;
+
     try {
-      
       const response = await fetch(`http://localhost:4000/orders/userstatus/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -149,11 +150,23 @@ function ProductsContent() {
       const pendingOrder = await response.json();
 
       if (pendingOrder.length > 0) {
-
         const orderId = pendingOrder[0]._id;
-        const updatedOrder = {
-          items: [...pendingOrder[0].items, { productId, quantity: 1 }]
-        };
+
+        const existingItem = pendingOrder[0].items.find(item => item.productId === productId);
+
+        let updatedItems;
+        if (existingItem) {
+
+          updatedItems = pendingOrder[0].items.map(item =>
+            item.productId === productId ? { ...item, quantity } : item
+          );
+        }
+        else {
+
+          updatedItems = [...pendingOrder[0].items, { productId, quantity }];
+        }
+
+        const updatedOrder = { items: updatedItems };
 
         const updateResponse = await fetch(`http://localhost:4000/orders/${orderId}`, {
           method: 'PUT',
@@ -170,7 +183,7 @@ function ProductsContent() {
 
         const newOrder = {
           userId,
-          items: [{ productId, quantity: 1 }],
+          items: [{ productId, quantity }],
           status: 'pending'
         };
 
