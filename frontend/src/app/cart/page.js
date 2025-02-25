@@ -25,7 +25,7 @@ export default function CartPage() {
                 return;
             }
             try {
-                const response = await fetch(`https//store-gyhu.vercel.app/orders/userstatus/${userId}`, {
+                const response = await fetch(`https://store-gyhu.vercel.app/orders/userstatus/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -82,7 +82,7 @@ export default function CartPage() {
         }
 
         try {
-            const response = await fetch(`https//store-gyhu.vercel.app/orders/${orderId}`, {
+            const response = await fetch(`https://store-gyhu.vercel.app/orders/${orderId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

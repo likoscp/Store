@@ -34,7 +34,7 @@ function ProductsContent() {
             }
 
             try {
-                const response = await axios.get(`https//store-gyhu.vercel.app/products?page=${currentPage}`, {
+                const response = await axios.get(`https://store-gyhu.vercel.app/products?page=${currentPage}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

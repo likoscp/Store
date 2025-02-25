@@ -26,7 +26,7 @@ export default function UserPage() {
       }
 
       try {
-        const response = await axios.get(`https//store-gyhu.vercel.app/users/${params.id}`, {
+        const response = await axios.get(`https://store-gyhu.vercel.app/users/${params.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
