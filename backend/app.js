@@ -31,7 +31,7 @@ const swaggerDocument = require("./swagger.json");
 const cors = require("cors");
 app.use(
   cors({
-    origin: "https://store-chi-tan.vercel.app",
+    origin: "https://store-beige-theta.vercel.app",
     credentials: true,
   })
 );
