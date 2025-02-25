@@ -6,6 +6,7 @@ export default function CartPage() {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [orderId, setOrderId] = useState(null); 
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -29,11 +30,20 @@ export default function CartPage() {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                if (!response.ok) throw new Error("Ошибка загрузки корзины");
+                
                 const data = await response.json();
 
                 if (data.length > 0) {
-                    setCartItems(data[0].items);
+                   
+                    setOrderId(data[0]._id);
+
+                    const transformedItems = data[0].items.map(item => ({
+                        id: item._id,
+                        name: item.productId.name,
+                        price: item.productId.price,
+                        quantity: item.quantity
+                    }));
+                    setCartItems(transformedItems);
                 } else {
                     setCartItems([]);
                 }
@@ -59,6 +69,35 @@ export default function CartPage() {
         setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
     };
 
+    const handleCheckout = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Please log in to proceed to checkout');
+            return;
+        }
+
+        if (!orderId) {
+            alert('Order ID not found');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:4000/orders/${orderId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ status: 'completed' }),
+            });
+
+
+            window.location.reload();
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
     const totalPrice = cartItems.reduce(
         (total, item) => total + item.price * item.quantity,
         0
@@ -82,13 +121,12 @@ export default function CartPage() {
                             {cartItems.map((item) => (
                                 <div
                                     key={`${item.id}-${item.name}`}
-
                                     className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6"
                                 >
                                     <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                                         <div className="text-end md:order-4 md:w-32">
                                             <p className="text-base font-bold text-gray-900 dark:text-white">
-                                                ${item.price * item.quantity}
+                                                ${(item.price * item.quantity).toFixed(2)}
                                             </p>
                                         </div>
 
@@ -158,11 +196,14 @@ export default function CartPage() {
                                 Total
                             </dt>
                             <dd className="text-base font-bold text-gray-900 dark:text-white">
-                                ${totalPrice}
+                                ${totalPrice.toFixed(2)}
                             </dd>
                         </dl>
 
-                        <button className="w-full bg-primary-700 text-white px-5 py-2.5 rounded-lg">
+                        <button
+                            className="w-full bg-primary-700 text-white px-5 py-2.5 rounded-lg"
+                            onClick={handleCheckout}
+                        >
                             Proceed to Checkout
                         </button>
                     </div>
