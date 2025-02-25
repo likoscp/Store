@@ -67,7 +67,7 @@ export default function Header() {
           <a href="/search" className="text-sm/6 font-semibold text-gray-900">
           Search
           </a>
-          <a href="/news" className="text-sm/6 font-semibold text-gray-900">
+          <a href="/posts" className="text-sm/6 font-semibold text-gray-900">
           News
           </a>
           <a href="/cart" className="text-sm/6 font-semibold text-gray-900">
@@ -117,7 +117,7 @@ export default function Header() {
                   Search
                 </a>
                 <a
-                  href="/news"
+                  href="/posts"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-900"
                 >
                   News

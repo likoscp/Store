@@ -23,21 +23,21 @@ function PostsContent() {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            setLoading(true);
-            const token = localStorage.getItem("token");
+            // setLoading(true);
+            // const token = localStorage.getItem("token");
 
-            if (!token) {
-                setError("Token not found, please sign in.");
-                window.location.href = '/sign-in';
-                setLoading(false);
-                return;
-            }
+            // if (!token) {
+            //     setError("Token not found, please sign in.");
+            //     window.location.href = '/sign-in';
+            //     setLoading(false);
+            //     return;
+            // }
 
             try {
                 const response = await axios.get(`http://localhost:4000/posts?page=${currentPage}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    // headers: {
+                    //     Authorization: `Bearer ${token}`,
+                    // },
                 });
 
                 if (Array.isArray(response.data.data)) {
@@ -48,7 +48,7 @@ function PostsContent() {
                 }
             } catch (error) {
                 if (error.response && error.response.status === 401) {
-                    window.location.href = '/sign-in';
+                    // window.location.href = '/sign-in';
                 } else {
                     setError("Error loading posts: " + error.message);
                 }

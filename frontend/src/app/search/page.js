@@ -282,7 +282,7 @@ function ProductsContent() {
                       href={`/products/${product._id}`}
                       className="text-base font-medium text-gray-900 hover:underline dark:text-white"
                     >
-                      {product.name}
+                      <b>{product.name}</b>
                     </a><br></br>
                     <a
                       href={`/search?page=1&search=&category=&minPrice=&maxPrice=&tags=${product.tags.join(",")}`}
