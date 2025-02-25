@@ -79,8 +79,6 @@ router.post('/sign-in',
                 secure: true, 
             });
 
-            res.status(200).json({ message: "Signed in successfully" });
-
             res.json({ token });
         } catch (err) {
             res.status(400).json({ error: err.message });
