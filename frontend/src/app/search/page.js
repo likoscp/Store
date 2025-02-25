@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
+import { jwtDecode } from 'jwt-decode';
 
 function ProductsContent() {
   const [products, setProducts] = useState([]);
@@ -121,9 +122,74 @@ function ProductsContent() {
     }));
   };
 
-  const handleAddToCart = (productId) => {
-    const quantity = quantities[productId] || 1;
-    console.log(`Added product ${productId} to cart with quantity ${quantity}`);
+
+  const handleAddToCart = async (productId) => {
+    const token = localStorage.getItem('token'); 
+    if (!token) {
+      alert('Please log in to add products to your cart');
+      return;
+    }
+
+    const decodedToken = jwtDecode(token);
+    console.log(decodedToken); 
+    const userId = decodedToken.id; 
+
+    if (!userId) {
+      alert('User ID not found in token');
+      return;
+    }
+
+    try {
+      
+      const response = await fetch(`http://localhost:4000/orders/userstatus/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const pendingOrder = await response.json();
+
+      if (pendingOrder.length > 0) {
+
+        const orderId = pendingOrder[0]._id;
+        const updatedOrder = {
+          items: [...pendingOrder[0].items, { productId, quantity: 1 }]
+        };
+
+        const updateResponse = await fetch(`http://localhost:4000/orders/${orderId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedOrder),
+        });
+
+        const result = await updateResponse.json();
+        console.log('Order updated:', result);
+      } else {
+
+        const newOrder = {
+          userId,
+          items: [{ productId, quantity: 1 }],
+          status: 'pending'
+        };
+
+        const createResponse = await fetch('http://localhost:4000/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newOrder),
+        });
+
+        const result = await createResponse.json();
+        console.log('Order created:', result);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to add product to cart');
+    }
   };
 
   return (
@@ -183,8 +249,8 @@ function ProductsContent() {
                   type="button"
                   onClick={() => handleTagChange(tag)}
                   className={`px-3 py-1 text-sm font-medium rounded-full ${filter.tags.includes(tag)
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
                     }`}
                 >
                   {tag}
@@ -288,7 +354,7 @@ function ProductsContent() {
                       href={`/search?page=1&search=&category=&minPrice=&maxPrice=&tags=${product.tags.join(",")}`}
                       className="text-base font-medium text-gray-900 hover:underline dark:text-white"
                     >
-                      {product.tags.join(", ")} 
+                      {product.tags.join(", ")}
                     </a>
                     <br></br>
                     <a
