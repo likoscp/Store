@@ -1,6 +1,7 @@
 # Store Project
 
 Dias Zakir SE-2320
+
 Sabina Abdikhalikova SE-2320
 
 ## Table of Contents
