@@ -33,6 +33,7 @@ export default function OrderPage() {
         });
 
         if (response.data) {
+          console.log("Order data:", response.data); 
           setOrder(response.data);
         } else {
           setError("Order not found.");
@@ -59,7 +60,7 @@ export default function OrderPage() {
     <div>
       <h1>Order Details</h1>
       <ul>
-        <li key={order._id}>
+        <li>
           <strong>ID:</strong> {order._id} <br />
           <strong>User ID:</strong> {order.userId} <br />
           <strong>Status:</strong> {order.status} <br />
@@ -67,9 +68,9 @@ export default function OrderPage() {
           <strong>Items:</strong>
           <ul>
             {order.items.map((item, index) => (
-              <li key={index}>
-                <strong>  Product ID:</strong> {item.productId} <br />
-                <strong>  Quantity:</strong> {item.quantity}
+              <li key={`${item.productId || item.id || item._id}-${index}`}>
+                <strong>Product ID:</strong> {item.productId || item.id || item._id} <br />
+                <strong>Quantity:</strong> {item.quantity}
               </li>
             ))}
           </ul>
