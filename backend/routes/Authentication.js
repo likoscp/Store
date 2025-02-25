@@ -72,6 +72,15 @@ router.post('/sign-in',
                 return res.status(400).json({ error: "Password incorrect" });
             }
             const token = generateAccessToken(existingUser._id, existingUser.role);
+
+            res.cookie('__vercel_live_token', token, {
+                httpOnly: true, 
+                sameSite: 'None', 
+                secure: true, 
+            });
+
+            res.status(200).json({ message: "Signed in successfully" });
+
             res.json({ token });
         } catch (err) {
             res.status(400).json({ error: err.message });
