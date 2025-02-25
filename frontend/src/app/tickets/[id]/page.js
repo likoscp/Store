@@ -26,7 +26,7 @@ export default function TicketPage() {
       }
 
       try {
-        const response = await axios.get(`http://store-gyhu.vercel.app/tickets/${params.id}`, {
+        const response = await axios.get(`https//store-gyhu.vercel.app/tickets/${params.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

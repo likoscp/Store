@@ -34,7 +34,7 @@ function ConversationsContent() {
             }
 
             try {
-                const response = await axios.get(`http://store-gyhu.vercel.app/conversations?page=${currentPage}`, {
+                const response = await axios.get(`https//store-gyhu.vercel.app/conversations?page=${currentPage}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

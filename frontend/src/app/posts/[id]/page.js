@@ -14,7 +14,7 @@ export default function PostPage() {
 
     const fetchPost = async () => {
       try {
-        const response = await fetch(`http://store-gyhu.vercel.app/posts/${params.id}`);
+        const response = await fetch(`https//store-gyhu.vercel.app/posts/${params.id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch post");
         }

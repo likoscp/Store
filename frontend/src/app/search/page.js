@@ -53,7 +53,7 @@ function ProductsContent() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://store-gyhu.vercel.app/filter`, {
+        const response = await axios.get(`https//store-gyhu.vercel.app/filter`, {
           params: {
             page: currentPage,
             name: filter.searchQuery,
@@ -142,7 +142,7 @@ function ProductsContent() {
     const quantity = quantities[productId] || 1;
 
     try {
-      const response = await fetch(`http://store-gyhu.vercel.app/orders/userstatus/${userId}`, {
+      const response = await fetch(`https//store-gyhu.vercel.app/orders/userstatus/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -168,7 +168,7 @@ function ProductsContent() {
 
         const updatedOrder = { items: updatedItems };
 
-        const updateResponse = await fetch(`http://store-gyhu.vercel.app/orders/${orderId}`, {
+        const updateResponse = await fetch(`https//store-gyhu.vercel.app/orders/${orderId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -187,7 +187,7 @@ function ProductsContent() {
           status: 'pending'
         };
 
-        const createResponse = await fetch('http://store-gyhu.vercel.app/orders', {
+        const createResponse = await fetch('https//store-gyhu.vercel.app/orders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -303,7 +303,7 @@ function ProductsContent() {
                         <svg
                           className="h-2.5 w-2.5 text-gray-900 dark:text-white"
                           aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns="https//www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 18 2"
                         >
@@ -335,7 +335,7 @@ function ProductsContent() {
                         <svg
                           className="h-2.5 w-2.5 text-gray-900 dark:text-white"
                           aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns="https//www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 18 18"
                         >
@@ -386,7 +386,7 @@ function ProductsContent() {
                         <svg
                           className="me-1.5 h-5 w-5"
                           aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns="https//www.w3.org/2000/svg"
                           width="24"
                           height="24"
                           fill="none"
@@ -411,7 +411,7 @@ function ProductsContent() {
                         <svg
                           className="me-1.5 h-5 w-5"
                           aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns="https//www.w3.org/2000/svg"
                           width="24"
                           height="24"
                           fill="none"
