@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.js", 
+      "use": "@vercel/node"
+    }
+  ],
+  "env": {
+    "MONGODB_URI": "mongodb+srv://SabinaMongoDB:LikoMongoNode@cluster0.ffv0e.mongodb.net/Store",
+    "secret": "59n/$`_>nbH3|4fvS=0LYc<8a5N[t0ZE|['j"
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/app.js"
+    }
+  ],
+  "installCommand": "npm install",
+  "buildCommand": "node app.js", 
+  "startCommand": "node app.js"}
