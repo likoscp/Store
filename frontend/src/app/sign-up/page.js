@@ -15,7 +15,7 @@ export default function SignUp() {
         e.preventDefault();
 
         try {
-            const response = await axios.post("https://store-gyhu.vercel.app/Auth/sign-up", {
+            const response = await axios.post("http://localhost:8080/api/v1/auth/register", {
                 email,
                 password,
                 name,
