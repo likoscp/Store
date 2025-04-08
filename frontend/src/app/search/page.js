@@ -53,7 +53,7 @@ function ProductsContent() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`https://store-gyhu.vercel.app/filter`, {
+        const response = await axios.get(`https://localhost:8081/products/`, {
           params: {
             page: currentPage,
             name: filter.searchQuery,

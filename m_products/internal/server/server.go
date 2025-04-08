@@ -23,14 +23,23 @@ type Server struct {
 
 func NewServer(cfg *config.Config) *Server {
 	e := echo.New()
+
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{echo.GET, echo.POST, echo.PATCH, echo.DELETE},
+		AllowHeaders:     []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAuthorization},
+		AllowCredentials: true,
+	}))
 
 	return &Server{
 		echo: e,
 		cfg:  cfg,
 	}
 }
+
 
 func (s *Server) Run() error {
 

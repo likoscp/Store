@@ -64,6 +64,21 @@ export default function Header() {
         <PopoverGroup className="hidden lg:flex lg:gap-x-12">
           
 
+          <a href="/products" className="text-sm/6 font-semibold text-gray-900">
+          Products
+          </a>
+          <a href="/posts" className="text-sm/6 font-semibold text-gray-900">
+          News
+          </a>
+          <a href="/cart" className="text-sm/6 font-semibold text-gray-900">
+          Cart
+          </a>
+        </PopoverGroup>
+        <PopoverGroup className="hidden lg:flex lg:gap-x-12">
+          
+        <a href="/products" className="text-sm/6 font-semibold text-gray-900">
+          products
+          </a>
           <a href="/search" className="text-sm/6 font-semibold text-gray-900">
           Search
           </a>
@@ -109,7 +124,12 @@ export default function Header() {
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
 
-
+              <a
+                  href="/products"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-900"
+                >
+                  products
+                </a>
                 <a
                   href="/search"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-900"

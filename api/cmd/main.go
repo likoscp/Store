@@ -40,8 +40,7 @@ func main() {
 	r.POST("/register", func(c *gin.Context) {
 		c.Request.URL.Path = "/microservice/auth/register"
 		authProxy.ServeHTTP(c.Writer, c.Request)
-		c.Writer.WriteString("Updated Path: " + c.Request.URL.Path + "\n")
-		authProxy.ServeHTTP(c.Writer, c.Request)
+
 	})
 
 	productProxyHandler := func(c *gin.Context) {
@@ -51,7 +50,7 @@ func main() {
 		} else {
 			c.Request.URL.Path = "/microservice/products/"
 		}
-		c.Writer.WriteString("Updated Path: " + c.Request.URL.Path + "\n")
+		// c.Writer.WriteString("Updated Path: " + c.Request.URL.Path + "\n")
 		productProxy.ServeHTTP(c.Writer, c.Request)
 	}
 
