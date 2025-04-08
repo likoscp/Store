@@ -4,12 +4,11 @@ import (
 	"context"
 	"errors"
 
+	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"github.com/likoscp/Store/m_auth/internal/config"
 	"github.com/likoscp/Store/m_auth/internal/handler"
-	"github.com/likoscp/Store/m_auth/internal/repository" 
+	"github.com/likoscp/Store/m_auth/internal/repository"
 	"github.com/likoscp/Store/m_auth/internal/service"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -24,28 +23,25 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 }
 
 type Server struct {
-	echo *echo.Echo
+	gin  *gin.Engine
 	cfg  *config.Config
 }
 
 func NewServer(cfg *config.Config) *Server {
-	e := echo.New()
-	
-	e.Validator = &CustomValidator{validator: validator.New()}
-	
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-
+	r := gin.Default()
+	r.Use(gin.Logger())      
+	r.Use(gin.Recovery())     
 	return &Server{
-		echo: e,
-		cfg:  cfg,
+		gin: r,
+		cfg: cfg,
 	}
 }
 
 func (s *Server) Run() error {
 	if s.cfg.DBname == "" {
-        return errors.New("DBname is empty! Check .env file")
-    }
+		return errors.New("no env")
+	}
+
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(s.cfg.MongoUri))
 	if err != nil {
 		return err
@@ -58,7 +54,7 @@ func (s *Server) Run() error {
 	authService := service.NewAuthService(authRepo, s.cfg.Secret)
 	authHandler := handler.NewAuthHandler(authService)
 
-	api := s.echo.Group("/microservice")
+	api := s.gin.Group("/microservice")
 	{
 		auth := api.Group("/auth")
 		{
@@ -68,5 +64,5 @@ func (s *Server) Run() error {
 		}
 	}
 
-	return s.echo.Start(s.cfg.Addr)
+	return s.gin.Run(s.cfg.Addr)
 }

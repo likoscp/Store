@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/labstack/echo/v4"
+	"github.com/gin-gonic/gin"
 	"github.com/likoscp/Store/m_auth/models"
 	"github.com/likoscp/Store/m_auth/internal/service"
 )
@@ -16,62 +16,54 @@ func NewAuthHandler(service *service.AuthService) *AuthHandler {
 	return &AuthHandler{service: service}
 }
 
-func (h *AuthHandler) Register(c echo.Context) error {
+func (h *AuthHandler) Register(c *gin.Context) {
 	var req models.RegisterRequest
-	if err := c.Bind(&req); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
-
-	if err := c.Validate(req); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	userID, err := h.service.Register(c.Request().Context(), req)
+	userID, err := h.service.Register(c.Request.Context(), req)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
-	return c.JSON(http.StatusCreated, map[string]string{
+	c.JSON(http.StatusCreated, gin.H{
 		"id":    userID,
 		"email": req.Email,
 	})
 }
 
-func (h *AuthHandler) Login(c echo.Context) error {
+func (h *AuthHandler) Login(c *gin.Context) {
 	var req models.LoginRequest
-	if err := c.Bind(&req); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
-
-	if err := c.Validate(req); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	token, err := h.service.Login(c.Request().Context(), req)
+	token, err := h.service.Login(c.Request.Context(), req)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusUnauthorized, err.Error())
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{
+	c.JSON(http.StatusOK, gin.H{
 		"token": token,
 	})
 }
-func (h *AuthHandler) Verify(c echo.Context) error {
+
+func (h *AuthHandler) Verify(c *gin.Context) {
 	var req models.VerifyRequest
-	if err := c.Bind(&req); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
-
-	if err := c.Validate(req); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
 	userID, role, err := h.service.VerifyToken(req.Token)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Invalid token")
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+		return
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{
+	c.JSON(http.StatusOK, gin.H{
 		"id":   userID,
 		"role": role,
 	})
