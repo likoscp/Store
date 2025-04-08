@@ -69,3 +69,11 @@ func (s *AuthService) Login(ctx context.Context, req models.LoginRequest) (strin
 
 	return token, nil
 }
+
+func (s *AuthService) VerifyToken(token string) (string, string, error) {
+	claims, err := pkg.ValidateJWT(token, s.secret)
+	if err != nil {
+		return "", "", err
+	}
+	return claims.UserID, claims.Role, nil
+}

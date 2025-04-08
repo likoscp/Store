@@ -30,3 +30,7 @@ type RegisterRequest struct {
 	Phone    string `json:"phone" validate:"required"`
 	Password string `json:"password" validate:"required,min=8"`
 }
+
+type VerifyRequest struct {
+	Token string `json:"token" validate:"required"`
+}

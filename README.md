@@ -1,4 +1,9 @@
 # Store Project
+m_auth        localhost:8080
+api-gateway   localhost:8081
+m_products    localhost:8082
+m_orders      localhost:8083
+
 
 Sabina Abdikhalikova SE-2320
 

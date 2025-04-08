@@ -56,3 +56,23 @@ func (h *AuthHandler) Login(c echo.Context) error {
 		"token": token,
 	})
 }
+func (h *AuthHandler) Verify(c echo.Context) error {
+	var req models.VerifyRequest
+	if err := c.Bind(&req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	if err := c.Validate(req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	userID, role, err := h.service.VerifyToken(req.Token)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Invalid token")
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{
+		"id":   userID,
+		"role": role,
+	})
+}
