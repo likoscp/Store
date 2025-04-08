@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -58,12 +59,14 @@ func (h *ProductHandler) GetById(c echo.Context) error {
 }
 
 func (h *ProductHandler) GetAllProducts(c echo.Context) error {
-	products, err := h.service.GetAllProducts(c.Request().Context())
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-	}
-
-	return c.JSON(http.StatusOK, products)
+    products, err := h.service.GetAllProducts(c.Request().Context())
+    if err != nil {
+        return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+    }
+    if len(products) == 0 {
+        log.Println("No products found")
+    }
+    return c.JSON(http.StatusOK, products)
 }
 
 func (h *ProductHandler) DeleteProduct(c echo.Context) error {

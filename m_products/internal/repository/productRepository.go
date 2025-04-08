@@ -22,6 +22,10 @@ func NewProductRepository(db *mongo.Database, collection string) *ProductReposit
 
 
 func (r *ProductRepository) CreateProduct(ctx context.Context, product models.Product) (string, error) {
+	if product.Name == "" || product.Price <= 0 || product.Stock < 0 || product.Category == "" {
+		return "", errors.New("product has invalid or empty fields")
+	}
+
 	res, err := r.collection.InsertOne(ctx, product)
 	if err != nil {
 		return "", err

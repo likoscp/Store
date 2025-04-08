@@ -1,19 +1,35 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http/httputil"
 	"net/url"
+	"time"
 
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	r := gin.Default()
-
-	authTarget, _ := url.Parse("http://localhost:8080")
+	r.Use(gin.Logger())
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+	authTarget, err := url.Parse("http://localhost:8080")
+	if err != nil {
+		panic("Invalid auth target URL: " + err.Error())
+	}
 	authProxy := httputil.NewSingleHostReverseProxy(authTarget)
 
-	productTarget, _ := url.Parse("http://localhost:8082")
+	productTarget, err := url.Parse("http://localhost:8082")
+	if err != nil {
+		panic("Invalid product target URL: " + err.Error())
+	}
 	productProxy := httputil.NewSingleHostReverseProxy(productTarget)
 
 	r.POST("/login", func(c *gin.Context) {
@@ -24,22 +40,23 @@ func main() {
 	r.POST("/register", func(c *gin.Context) {
 		c.Request.URL.Path = "/microservice/auth/register"
 		authProxy.ServeHTTP(c.Writer, c.Request)
+		c.Writer.WriteString("Updated Path: " + c.Request.URL.Path + "\n")
+		authProxy.ServeHTTP(c.Writer, c.Request)
 	})
 
-	r.Any("/products", func(c *gin.Context) {
-		c.Request.URL.Path = "/microservice/products"
+	productProxyHandler := func(c *gin.Context) {
+		id := c.Param("id")
+		if id != "" {
+			c.Request.URL.Path = "/microservice/products/" + id
+		} else {
+			c.Request.URL.Path = "/microservice/products/"
+		}
+		c.Writer.WriteString("Updated Path: " + c.Request.URL.Path + "\n")
 		productProxy.ServeHTTP(c.Writer, c.Request)
-	})
+	}
 
-	r.Any("/products/", func(c *gin.Context) {
-		c.Request.URL.Path = "/microservice/products/"
-		productProxy.ServeHTTP(c.Writer, c.Request)
-	})
-
-	r.Any("/products/:id", func(c *gin.Context) {
-		c.Request.URL.Path = "/microservice/products/" + c.Param("id")
-		productProxy.ServeHTTP(c.Writer, c.Request)
-	})
+	r.Any("/products/", productProxyHandler)
+	r.Any("/products/:id", productProxyHandler)
 
 	r.Run(":8081")
 }
