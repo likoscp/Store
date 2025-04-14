@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package auth;
+package proto;
 
-option go_package = "github.com/likoscp/Store/proto/auth;authpb";
+option go_package = "/auth;authpb";
 
 message LoginRequest {
   string email = 1;
