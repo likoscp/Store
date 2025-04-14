@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "/orders;orderspb";
+
+import "google/protobuf/timestamp.proto";
+
+message Order {
+  string id = 1;
+  string user_id = 2;
+  repeated OrderItem items = 3;
+  string status = 4;
+  google.protobuf.Timestamp order_date = 5;
+  double total_price = 6;
+}
+
+message OrderItem {
+  string id = 1;
+  string product_id = 2;
+  int32 quantity = 3;
+}
+
+message CreateOrderRequest {
+  string user_id = 1;
+  repeated OrderItem items = 2;
+  string status = 3;
+  google.protobuf.Timestamp order_date = 4;
+  double total_price = 5;
+}
+
+message CreateOrderResponse {
+  string id = 1;
+}
+
+message UpdateOrderRequest {
+  string id = 1;
+  repeated OrderItem items = 2;
+  string status = 3;
+  google.protobuf.Timestamp order_date = 4;
+  double total_price = 5;
+}
+
+message OrderList {
+  repeated Order orders = 1;
+}
+
+message DeleteOrderRequest {
+  string id = 1;
+}
+
+message PayOrderRequest {
+  string user_id = 1;
+  repeated string order_ids = 2;
+}
+
+message PayOrderResponse {
+  repeated Order orders = 1;
+}
+
+service OrderService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc UpdateOrder(UpdateOrderRequest) returns (Empty);
+  rpc GetOrderById(OrderIdRequest) returns (Order);
+  rpc ListOrders(Empty) returns (OrderList);
+  rpc DeleteOrder(DeleteOrderRequest) returns (Empty);
+  rpc PayOrder(PayOrderRequest) returns (PayOrderResponse);
+}
+
+message OrderIdRequest {
+  string id = 1;
+}
+
+message Empty {}

@@ -6,10 +6,7 @@ import (
 	"github.com/likoscp/Store/m_products/internal/server"
 	log "github.com/sirupsen/logrus"
 	
-
 )
-
-
 
 func main() {
 	c, err := config.NewConfig()
