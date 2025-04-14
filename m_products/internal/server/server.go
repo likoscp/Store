@@ -2,74 +2,84 @@ package server
 
 import (
 	"context"
-	"errors"
-	"github.com/gin-gonic/gin"
+	"fmt"
+	"log"
+	"time"
 	"github.com/likoscp/Store/m_products/internal/config"
-	"github.com/likoscp/Store/m_products/internal/handler"
+	"net"
+	grpcCustom "github.com/likoscp/Store/m_products/internal/grpc"
 	"github.com/likoscp/Store/m_products/internal/repository"
 	"github.com/likoscp/Store/m_products/internal/service"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"google.golang.org/grpc"
+
+	productpb "github.com/likoscp/Store/proto/product"
 )
 
 type Server struct {
-	gin  *gin.Engine
-	cfg  *config.Config
+	cfg        *config.Config
+	grpcServer *grpc.Server
 }
 
 func NewServer(cfg *config.Config) *Server {
-	r := gin.Default()
-	r.Use(gin.Logger())   
-	r.Use(gin.Recovery()) 
 
-	r.Use(func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
-		
-		c.Next()
-	})
 
 	return &Server{
-		gin: r,
 		cfg: cfg,
 	}
 }
-
-func (s *Server) Run() error {
-	if s.cfg.DBname == "" {
-		return errors.New("DBname is empty! Check .env file")
+func (s *Server) StartGRPC() error {
+	lis, err := net.Listen("tcp", ":50051")
+	if err != nil {
+		log.Printf("❌ Failed to listen: %v", err)
+		return fmt.Errorf("failed to listen: %w", err)
 	}
+
+	s.grpcServer = grpc.NewServer(
+		grpc.UnaryInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+			log.Printf("📨 gRPC request received - Method: %s, Request: %+v", info.FullMethod, req)
+		
+			start := time.Now()
+			resp, err = handler(ctx, req)
+			
+			log.Printf("📤 gRPC response sent - Method: %s, Duration: %v, Error: %v", 
+				info.FullMethod, 
+				time.Since(start), 
+				err)
+			
+			return resp, err
+		}),
+	)
 
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(s.cfg.MongoUri))
 	if err != nil {
-		return err
+		log.Printf("❌ MongoDB connection failed: %v", err)
+		return fmt.Errorf("mongo connection failed: %w", err)
 	}
-	defer client.Disconnect(context.Background())
+	
+	err = client.Ping(context.Background(), nil)
+	if err != nil {
+		log.Printf("❌ MongoDB ping failed: %v", err)
+		return fmt.Errorf("mongo ping failed: %w", err)
+	}
+
+	log.Println("✅ Successfully connected to MongoDB")
 
 	db := client.Database(s.cfg.DBname)
 
 	productRepo := repository.NewProductRepository(db, s.cfg.Collection)
 	productService := service.NewProductService(productRepo, s.cfg.Secret)
-	productHandler := handler.NewProductHandler(productService)
+	productGRPC := grpcCustom.NewProductGRPCHandler(productService)
 
-	api := s.gin.Group("/microservice")
-	{
-		product := api.Group("/products")
-		{
-			product.POST("/", productHandler.CreateProduct)
-			product.PATCH("/:id", productHandler.UpdateProduct)
-			product.GET("/:id", productHandler.GetById)
-			product.GET("/", productHandler.GetAllProducts)
-			product.DELETE("/:id", productHandler.DeleteProduct)
-		}
+	productpb.RegisterProductServiceServer(s.grpcServer, productGRPC)
+
+	log.Println("🚀 gRPC server started on port 50051")
+	
+	if err := s.grpcServer.Serve(lis); err != nil {
+		log.Printf("❌ gRPC server failed: %v", err)
+		return fmt.Errorf("gRPC server failed: %w", err)
 	}
 
-	return s.gin.Run(s.cfg.Addr)
+	return nil
 }
