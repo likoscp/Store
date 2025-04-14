@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "github.com/likoscp/Store/proto/auth;authpb";
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message RegisterRequest {
+  string name = 1;
+  string email = 2;
+  string phone = 3;
+  string password = 4;
+}
+
+message VerifyRequest {
+  string token = 1;
+}
+
+message AuthResponse {
+  string token = 1;            
+}
+
+message ErrorResponse {
+  string message = 1;
+  int32 code = 2;         
+}
+
+message UserID {
+  string id = 1;
+}
+
+message UserProfile {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string phone = 4;
+  string address = 5;
+  string status = 6;
+  int32 loyalityLevel = 7;
+  string role = 8;
+  string createdDate = 9;
+}
+
+service UserService {
+  rpc RegisterUser(RegisterRequest) returns (AuthResponse);
+  rpc AuthenticateUser(LoginRequest) returns (AuthResponse);
+  rpc GetUserProfile(UserID) returns (UserProfile);
+}
