@@ -25,7 +25,11 @@ func main() {
 		panic("Invalid auth target URL: " + err.Error())
 	}
 	authProxy := httputil.NewSingleHostReverseProxy(authTarget)
-
+	orderTarget, err := url.Parse("http://localhost:8083")
+	if err != nil {
+		panic("Invalid order target URL: " + err.Error())
+	}
+	orderProxy := httputil.NewSingleHostReverseProxy(orderTarget)
 	productTarget, err := url.Parse("http://localhost:8082")
 	if err != nil {
 		panic("Invalid product target URL: " + err.Error())
@@ -57,5 +61,19 @@ func main() {
 	r.Any("/products/", productProxyHandler)
 	r.Any("/products/:id", productProxyHandler)
 
+	orderProxyHandler := func(c *gin.Context) {
+		id := c.Param("id")
+		if id != "" {
+			c.Request.URL.Path = "/microservice/orders/" + id
+		} else {
+			c.Request.URL.Path = "/microservice/orders/"
+		}
+		// c.Writer.WriteString("Updated Path: " + c.Request.URL.Path + "\n")
+		orderProxy.ServeHTTP(c.Writer, c.Request)
+	}
+
+	r.Any("/orders/", orderProxyHandler)
+	r.Any("/orders/:id", orderProxyHandler)
+	
 	r.Run(":8081")
 }
