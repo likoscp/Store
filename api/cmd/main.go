@@ -46,6 +46,12 @@ func main() {
 		authProxy.ServeHTTP(c.Writer, c.Request)
 
 	})
+	r.POST("/orders/pay/:id", func(c *gin.Context) {
+		id := c.Param("id")
+		c.Request.URL.Path = "/microservice/orders/pay/" + id
+		orderProxy.ServeHTTP(c.Writer, c.Request)
+	})
+
 
 	productProxyHandler := func(c *gin.Context) {
 		id := c.Param("id")
