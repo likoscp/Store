@@ -13,6 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 
 	orderpb "github.com/likoscp/Store/proto/order"
 )
@@ -73,7 +74,7 @@ func (s *Server) StartGRPC() error {
 	orderGRPC := grpcCustom.NewOrderGRPCHandler(orderService)
 
 	orderpb.RegisterOrderServiceServer(s.grpcServer, orderGRPC)
-
+	reflection.Register(s.grpcServer)
 	log.Println("🚀 gRPC server started on port 50051")
 	
 	if err := s.grpcServer.Serve(lis); err != nil {

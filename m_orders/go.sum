@@ -50,10 +50,8 @@ github.com/klauspost/cpuid/v2 v2.2.7/go.mod h1:Lcz8mBdAVJIBVzewtcLocK12l3Y+JytZY
 github.com/knz/go-libedit v1.10.1/go.mod h1:MZTVkCWyz0oBc7JOWP3wNAzd002ZbM/5hgShxwh4x8M=
 github.com/leodido/go-urn v1.4.0 h1:WT9HwE9SGECu3lg4d/dIA+jxlljEa1/ffXKmRjqdmIQ=
 github.com/leodido/go-urn v1.4.0/go.mod h1:bvxc+MVxLKB4z00jd1z+Dvzr47oO32F/QSNjSBOlFxI=
-github.com/likoscp/Store v0.0.0-20250415000211-a0b9f2bba3d5 h1:E9MweClgq8gAM7T+j7p1FAzorSZ7+DL6cCvTQIZXFxg=
-github.com/likoscp/Store v0.0.0-20250415000211-a0b9f2bba3d5/go.mod h1:czj+0z3NqryZSsCUAzcTIEZGwz4CL8CN+mSvYCGAp3k=
-github.com/likoscp/Store/proto v0.0.0-20250414235221-56480a51208a h1:54pHZsOHPgxg4yjglDtkGH0MfEImXZuVIrIXgRZj1PE=
-github.com/likoscp/Store/proto v0.0.0-20250414235221-56480a51208a/go.mod h1:wtmLmGgkoOLcertTKdsN7BNqskmq9wQsUBuhnKYNxqg=
+github.com/likoscp/Store/proto v0.0.0-20250415001702-fca680769d78 h1:zYYSp5ZKhKAKhsj3sO+SB15v9uEIxYbcmeSfPx2jMLc=
+github.com/likoscp/Store/proto v0.0.0-20250415001702-fca680769d78/go.mod h1:wtmLmGgkoOLcertTKdsN7BNqskmq9wQsUBuhnKYNxqg=
 github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
 github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
 github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=

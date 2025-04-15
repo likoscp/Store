@@ -24,7 +24,6 @@ require (
 	github.com/klauspost/compress v1.16.7 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
-	github.com/likoscp/Store v0.0.0-20250415000211-a0b9f2bba3d5 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
@@ -48,7 +47,7 @@ require (
 
 require (
 	github.com/gin-gonic/gin v1.10.0
-	github.com/likoscp/Store/proto v0.0.0-20250414235221-56480a51208a
+	github.com/likoscp/Store/proto v0.0.0-20250415001702-fca680769d78
 	go.mongodb.org/mongo-driver v1.17.3
 	golang.org/x/sys v0.32.0 // indirect
 	google.golang.org/grpc v1.71.1
