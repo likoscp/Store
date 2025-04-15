@@ -25,13 +25,12 @@ type Server struct {
 
 func NewServer(cfg *config.Config) *Server {
 
-
 	return &Server{
 		cfg: cfg,
 	}
 }
 func (s *Server) StartGRPC() error {
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", s.cfg.Addr)
 	if err != nil {
 		log.Printf("❌ Failed to listen: %v", err)
 		return fmt.Errorf("failed to listen: %w", err)
@@ -75,7 +74,7 @@ func (s *Server) StartGRPC() error {
 
 	orderpb.RegisterOrderServiceServer(s.grpcServer, orderGRPC)
 	reflection.Register(s.grpcServer)
-	log.Println("🚀 gRPC server started on port 50051")
+	log.Println("🚀 gRPC server started on port " + s.cfg.Addr)
 	
 	if err := s.grpcServer.Serve(lis); err != nil {
 		log.Printf("❌ gRPC server failed: %v", err)

@@ -15,8 +15,6 @@ func main() {
 	}
 	s := server.NewServer(c)
 
-	log.Printf("🚀 Starting gRPC server on %s", c.Addr)
-
 	if err := s.StartGRPC(); err != nil {
 		log.Fatalf("!!! gRPC server failed: %v", err) 
 	}

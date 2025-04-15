@@ -30,7 +30,7 @@ func NewServer(cfg *config.Config) *Server {
 	}
 }
 func (s *Server) StartGRPC() error {
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", s.cfg.Addr)
 	if err != nil {
 		log.Printf("❌ Failed to listen: %v", err)
 		return fmt.Errorf("failed to listen: %w", err)
@@ -74,7 +74,7 @@ func (s *Server) StartGRPC() error {
 
 	productpb.RegisterProductServiceServer(s.grpcServer, productGRPC)
 
-	log.Println("🚀 gRPC server started on port 50051")
+	log.Println("🚀 gRPC server started on port " + s.cfg.Addr)
 	
 	if err := s.grpcServer.Serve(lis); err != nil {
 		log.Printf("❌ gRPC server failed: %v", err)
