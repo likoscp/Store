@@ -13,6 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 
 	productpb "github.com/likoscp/Store/proto/product"
 )
@@ -73,7 +74,7 @@ func (s *Server) StartGRPC() error {
 	productGRPC := grpcCustom.NewProductGRPCHandler(productService)
 
 	productpb.RegisterProductServiceServer(s.grpcServer, productGRPC)
-
+	reflection.Register(s.grpcServer)
 	log.Println("🚀 gRPC server started on port " + s.cfg.Addr)
 	
 	if err := s.grpcServer.Serve(lis); err != nil {
