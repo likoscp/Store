@@ -4,7 +4,7 @@
 // 	protoc        v6.30.2
 // source: order.proto
 
-package orderspb
+package orderpb
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -682,7 +682,7 @@ const file_order_proto_rawDesc = "" +
 	"\n" +
 	"ListOrders\x12\f.proto.Empty\x1a\x10.proto.OrderList\x126\n" +
 	"\vDeleteOrder\x12\x19.proto.DeleteOrderRequest\x1a\f.proto.Empty\x12;\n" +
-	"\bPayOrder\x12\x16.proto.PayOrderRequest\x1a\x17.proto.PayOrderResponseB\x12Z\x10/orders;orderspbb\x06proto3"
+	"\bPayOrder\x12\x16.proto.PayOrderRequest\x1a\x17.proto.PayOrderResponseB\x10Z\x0e/order;orderpbb\x06proto3"
 
 var (
 	file_order_proto_rawDescOnce sync.Once

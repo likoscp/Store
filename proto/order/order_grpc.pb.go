@@ -4,7 +4,7 @@
 // - protoc             v6.30.2
 // source: order.proto
 
-package orderspb
+package orderpb
 
 import (
 	context "context"
