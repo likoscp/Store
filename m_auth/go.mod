@@ -6,7 +6,6 @@ require (
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/joho/godotenv v1.5.1
-	github.com/likoscp/Store/proto v0.0.0-20250414210201-4008c0f7a417
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/crypto v0.37.0
 )
@@ -48,7 +47,6 @@ require (
 	golang.org/x/sync v0.13.0 // indirect
 	golang.org/x/term v0.31.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250115164207-1a7da9e5054f // indirect
 	google.golang.org/protobuf v1.36.5 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
@@ -58,5 +56,4 @@ require (
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	go.mongodb.org/mongo-driver v1.17.3
 	golang.org/x/sys v0.32.0 // indirect
-	google.golang.org/grpc v1.71.1
 )

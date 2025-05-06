@@ -168,3 +168,8 @@ Store is an e-commerce web application that allows users to browse products, add
   ```json
   [{ "id": "123", "name": "John Doe", "email": "user@example.com" }]
   ```
+
+
+## docker build
+- docker-compose build --no-cache
+- docker-compose up

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "/producer;producerpb";
+
+message OrderItem {
+  string product_id = 1;
+  int32 quantity = 2;
+}
+
+message OrderCreated {
+  string id = 1;
+  string user_id = 2;
+  repeated OrderItem items = 3;
+  double total_price = 4;
+}
+
+service ProducerService {
+  rpc PublishOrderCreated(OrderCreated) returns (Empty);
+}
+
+message Empty {}
