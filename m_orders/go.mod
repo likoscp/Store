@@ -49,7 +49,8 @@ require (
 
 require (
 	github.com/gin-gonic/gin v1.10.0
-	github.com/likoscp/Store/proto v0.0.0-20250415065230-509a05b7ade4
+	github.com/likoscp/Store/m_producer v0.0.0-20250512075643-2994c4ea8851
+	github.com/likoscp/Store/proto v0.0.0-20250512075643-2994c4ea8851
 	github.com/nats-io/nats.go v1.42.0
 	go.mongodb.org/mongo-driver v1.17.3
 	golang.org/x/sys v0.32.0 // indirect
