@@ -25,6 +25,5 @@ func (h *OrderHandler) CreateOrder(ctx context.Context, req *pb.CreateOrderReque
 		return nil, err
 	}
 
-	return &pb.CreateOrderResponse{
-	}, nil
+	return &pb.CreateOrderResponse{  }, nil
 }

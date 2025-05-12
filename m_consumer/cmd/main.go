@@ -10,13 +10,13 @@ import (
 )
 
 func main() {
-	productClient, err := product.NewProductClient("product-service:50052")
+	productClient, err := product.NewProductClient("localhost:8082")
 	if err != nil {
 		log.Fatalf("Failed to connect to product-service: %v", err)
 	}
 	defer productClient.Close()
 
-	subscriber, err := nats.NewSubscriber("nats://nats:4222", productClient)
+	subscriber, err := nats.NewSubscriber("localhost:4222", productClient)
 	if err != nil {
 		log.Fatalf("Failed to connect to NATS: %v", err)
 	}

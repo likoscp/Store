@@ -26,18 +26,19 @@ func NewSubscriber(natsURL string, productClient *product.Client) (*Subscriber, 
 func (s *Subscriber) SubscribeToOrderCreated() {
 	s.conn.Subscribe("order.created", func(msg *nats.Msg) {
 		var order struct {
-			Products []struct {
+			Items []struct {
 				ProductID string `json:"productId"`
 				Quantity  int    `json:"quantity"`
-			} `json:"products"`
+			} `json:"items"`
 		}
+		
 
 		if err := json.Unmarshal(msg.Data, &order); err != nil {
 			log.Printf("Error unmarshaling order: %v", err)
 			return
 		}
 
-		for _, item := range order.Products {
+		for _, item := range order.Items {
 			productResp, err := s.productClient.GetProduct(context.Background(), &pb.ProductId{
 				Id: item.ProductID,
 			})
