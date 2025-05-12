@@ -4,7 +4,7 @@ go 1.23.4
 
 require (
 	github.com/joho/godotenv v1.5.1
-	github.com/likoscp/Store/proto v0.0.0-20250414221815-85e082d00a7e
+	github.com/likoscp/Store/proto v0.0.0-20250415065230-509a05b7ade4
 	github.com/sirupsen/logrus v1.9.3
 )
 

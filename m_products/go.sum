@@ -19,6 +19,8 @@ github.com/klauspost/compress v1.16.7 h1:2mk3MPGNzKyxErAw8YaohYh69+pa4sIQSC0fPGC
 github.com/klauspost/compress v1.16.7/go.mod h1:ntbaceVETuRiXiv4DpjP66DpAtAGkEQskQzEyD//IeE=
 github.com/likoscp/Store/proto v0.0.0-20250414221815-85e082d00a7e h1:EahOifEgpUtjXBalZGtmuqgkCBUWUcwEbvtiTi+KAJM=
 github.com/likoscp/Store/proto v0.0.0-20250414221815-85e082d00a7e/go.mod h1:wtmLmGgkoOLcertTKdsN7BNqskmq9wQsUBuhnKYNxqg=
+github.com/likoscp/Store/proto v0.0.0-20250415065230-509a05b7ade4 h1:NH+lJs+LY7FSZ/SZNaxSjPBsY5yAgNTZVycrQDalL8M=
+github.com/likoscp/Store/proto v0.0.0-20250415065230-509a05b7ade4/go.mod h1:wtmLmGgkoOLcertTKdsN7BNqskmq9wQsUBuhnKYNxqg=
 github.com/montanaflynn/stats v0.7.1 h1:etflOAAHORrCC44V+aR6Ftzort912ZU+YLiSTuV8eaE=
 github.com/montanaflynn/stats v0.7.1/go.mod h1:etXPPgVO6n31NxCd9KQUMvCM+ve0ruNzt6R8Bnaayow=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

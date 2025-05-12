@@ -6,53 +6,53 @@ services:
     ports:
       - "4222:4222"
 
-  order-service:
-    build: ./m_orders
-    ports:
-      - "8083:8083"
-    depends_on:
-      - nats
-    env_file:
-      - ./m_orders/.env  
+  # order-service:
+  #   build: ./m_orders
+  #   ports:
+  #     - "8083:8083"
+  #   depends_on:
+  #     - nats
+  #   env_file:
+  #     - ./m_orders/.env  
 
-  product-service:
-    build: ./m_products
-    ports:
-      - "8082:8082"
-    env_file:
-      - ./m_products/.env
+  # product-service:
+  #   build: ./m_products
+  #   ports:
+  #     - "8082:8082"
+  #   env_file:
+  #     - ./m_products/.env
 
-  user-service:
-    build: ./m_auth
-    ports:
-      - "8080:8080"
-    env_file:
-      - ./m_auth/.env
+  # user-service:
+  #   build: ./m_auth
+  #   ports:
+  #     - "8080:8080"
+  #   env_file:
+  #     - ./m_auth/.env
 
-  producer-service:
-    build: ./m_producer
-    ports:
-      - "50054:50054"
-    depends_on:
-      - nats
-    environment:
-      - NATS_URL=nats://nats:4222
+  # producer-service:
+  #   build: ./m_producer
+  #   ports:
+  #     - "50054:50054"
+  #   depends_on:
+  #     - nats
+  #   environment:
+  #     - NATS_URL=nats://nats:4222
 
-  consumer-service:
-    build: ./m_consumer
-    depends_on:
-      - nats
-      - product-service
-    environment:
-      - NATS_URL=nats://nats:4222
-      - PRODUCT_SERVICE_ADDR=product-service:8082
+  # consumer-service:
+  #   build: ./m_consumer
+  #   depends_on:
+  #     - nats
+  #     - product-service
+  #   environment:
+  #     - NATS_URL=nats://nats:4222
+  #     - PRODUCT_SERVICE_ADDR=product-service:8082
 
-  api-gateway:
-    build: ./api
-    ports:
-      - "8081:8081"
-    depends_on:
-      - user-service
-      - order-service
-      - product-service
+  # api-gateway:
+  #   build: ./api
+  #   ports:
+  #     - "8081:8081"
+  #   depends_on:
+  #     - user-service
+  #     - order-service
+  #     - product-service
 
