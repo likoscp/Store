@@ -2,11 +2,13 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
-
+	"github.com/likoscp/Store/m_products/internal/cache"
 	"github.com/likoscp/Store/m_products/internal/repository"
 	"github.com/likoscp/Store/m_products/models"
-
+	"time"
+	"log"
 )
 
 type ProductService struct {
@@ -40,15 +42,41 @@ func (s *ProductService) UpdateProduct(ctx context.Context, id string, req model
 	if err != nil {
 		return err
 	}
+	cache.Client.Del(ctx, "product:"+id)
 	return nil
 }
 
+// func (s *ProductService) GetByID(ctx context.Context, id string) (*models.Product, error) {
+// 	product, err := s.repo.GetByID(ctx, id)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return product, nil
+// }
+
 func (s *ProductService) GetByID(ctx context.Context, id string) (*models.Product, error) {
-	product, err := s.repo.GetByID(ctx, id)
+	key := "product:" + id
+	val, err := cache.Client.Get(ctx, key).Result()
+	if err == nil {
+		var p models.Product
+		if err := json.Unmarshal([]byte(val), &p); err == nil {
+			return &p, nil
+		}
+	}
+	p, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-	return product, nil
+
+	bytes, _ := json.Marshal(p)
+	cache.Client.Set(ctx, key, bytes, time.Minute*5)
+	if err == nil {
+		log.Println("CACHE HIT for", key)
+	} else {
+		log.Println("CACHE MISS for", key)
+	}
+
+	return p, nil
 }
 
 func (s *ProductService) GetAllProducts(ctx context.Context) ([]models.Product, error) {
