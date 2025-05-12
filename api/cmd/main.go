@@ -20,17 +20,17 @@ func main() {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-	authTarget, err := url.Parse("http://localhost:8080")
+	authTarget, err := url.Parse("user-service:8080")
 	if err != nil {
 		panic("Invalid auth target URL: " + err.Error())
 	}
 	authProxy := httputil.NewSingleHostReverseProxy(authTarget)
-	orderTarget, err := url.Parse("http://localhost:8083")
+	orderTarget, err := url.Parse("http://order-service:8083")
 	if err != nil {
 		panic("Invalid order target URL: " + err.Error())
 	}
 	orderProxy := httputil.NewSingleHostReverseProxy(orderTarget)
-	productTarget, err := url.Parse("http://localhost:8082")
+	productTarget, err := url.Parse("product-service:8082")
 	if err != nil {
 		panic("Invalid product target URL: " + err.Error())
 	}

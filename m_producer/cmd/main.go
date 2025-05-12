@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	publisher, err := nats.NewPublisher("localhost:4222")
+	publisher, err := nats.NewPublisher("nats://nats:4222")
 	if err != nil {
 		log.Fatalf("Failed to connect to NATS: %v", err)
 	}

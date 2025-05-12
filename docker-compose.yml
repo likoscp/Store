@@ -11,27 +11,42 @@ services:
       - "6379:6379"
 
   order-service:
-    build: ./m_orders
+    build: 
+        context: ./m_orders
+        args:
+        - MY_ENV_VAR
     ports:
       - "8083:8083"
     depends_on:
       - nats
     env_file:
       - ./m_orders/.env  
-
+    volumes:
+      - ./m_orders/.env:/.env 
+      
   product-service:
-    build: ./m_products
+    build: 
+        context: ./m_products
+        args:
+        - MY_ENV_VAR
     ports:
       - "8082:8082"
     env_file:
       - ./m_products/.env
+    volumes:
+      - ./m_products/.env:/.env 
 
   user-service:
-    build: ./m_auth
+    build: 
+        context: ./m_auth
+        args:
+        - MY_ENV_VAR
     ports:
       - "8080:8080"
     env_file:
       - ./m_auth/.env
+    volumes:
+      - ./m_auth/.env:/.env 
 
   producer-service:
     build: ./m_producer

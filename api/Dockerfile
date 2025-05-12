@@ -6,6 +6,8 @@ COPY . .
 RUN go build -o main ./cmd
 
 FROM debian:bookworm-slim
+
+
 RUN apt-get update && apt-get install -y libc6
 
 WORKDIR /root/

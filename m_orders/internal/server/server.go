@@ -74,7 +74,7 @@ func (s *Server) StartGRPC() error {
 	orderService := service.NewOrderService(orderRepo, s.cfg.Secret)
 	
 
-	publisher, err := nats.NewPublisher("nats://localhost:4222")
+	publisher, err := nats.NewPublisher("nats://nats:4222")
 	if err != nil {
 		log.Fatalf("failed to create NATS publisher: %v", err)
 	}
