@@ -173,3 +173,11 @@ Store is an e-commerce web application that allows users to browse products, add
 ## docker build
 - docker-compose build --no-cache
 - docker-compose up
+
+### GRPC UI
+- grpcui -plaintext localhost:8082
+- grpcui -plaintext localhost:8083
+
+## Redis CLI
+- docker exec -it store-redis-1 redis-cli
+- KEYS * or GET *Key*

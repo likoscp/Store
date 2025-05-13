@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/likoscp/Store/m_orders/models"
 	"go.mongodb.org/mongo-driver/bson"
@@ -114,7 +115,7 @@ func (r *OrderRepository) DeleteOrder(ctx context.Context, id string) error {
 
 	return nil
 }
-
+// тут транзакция, которую я еще давно делала, но не помню, как она работает
 func (r *OrderRepository) PayOrder(ctx context.Context, userID string, orderIDs []string) ([]models.Order, error) {
 	uid, err := primitive.ObjectIDFromHex(userID)
 	if err != nil {
@@ -172,17 +173,22 @@ func (r *OrderRepository) PayOrder(ctx context.Context, userID string, orderIDs 
 			return err
 		}
 		
-
+		log.Printf("Count Orders: %d", len(orders))
 		return session.CommitTransaction(sc)
 	})
+	log.Printf("After transaction: %d", len(orders))
 
 	if err != nil {
+		log.Printf("❌ Failed to pay orders: %v", err)
+
 		return nil, err
 	}
 
 	for i := range orders {
 		orders[i].Status = "paid"
+		log.Printf("Order %s paid successfully", orders[i].ID.Hex())
 	}
+	log.Println("✅ Orders paid successfully")
 
 	return orders, nil
 }

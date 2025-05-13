@@ -202,10 +202,30 @@ func (h *OrderGRPCHandler) DeleteOrder(ctx context.Context, req *orderpb.DeleteO
 }
 
 func (h *OrderGRPCHandler) PayOrder(ctx context.Context, req *orderpb.PayOrderRequest) (*orderpb.PayOrderResponse, error) {
-	_, err := h.service.PayOrder(ctx, req.UserId, req.OrderIds)
+	orders, err := h.service.PayOrder(ctx, req.UserId, req.OrderIds)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to delete: %v", err)
 	}
-	return&orderpb.PayOrderResponse{}, nil
+
+	var pbOrders []*orderpb.Order
+	for _, order := range orders {
+		var items []*orderpb.OrderItem
+		for _, item := range order.Items {
+			items = append(items, &orderpb.OrderItem{
+				Id:        item.ID.Hex(),
+				ProductId: item.ProductID.Hex(),
+				Quantity:  int32(item.Quantity),
+			})
+		}
+		pbOrders = append(pbOrders, &orderpb.Order{
+			Id:         order.ID.Hex(),
+			UserId:     order.UserID.Hex(),
+			Items:      items,
+			Status:     order.Status,
+			OrderDate:  timestamppb.New(order.OrderDate.Time()),
+			TotalPrice: order.TotalPrice,
+		})
+	}
+	return &orderpb.PayOrderResponse{Orders: pbOrders}, nil
 }
 
