@@ -14,18 +14,7 @@ import (
 	"log"
 )
 
-type OrderGRPCHandler struct {
-	orderpb.UnimplementedOrderServiceServer
-	service *service.OrderService
-    natsPublisher  *nats.Publisher
-}
 
-func NewOrderGRPCHandler(service *service.OrderService, publisher *nats.Publisher) *OrderGRPCHandler {
-	return &OrderGRPCHandler{
-        service:       service,
-        natsPublisher: publisher,
-    }
-}
 
 func (h *OrderGRPCHandler) CreateOrder(ctx context.Context, req *orderpb.CreateOrderRequest) (*orderpb.CreateOrderResponse, error) {
     orderItems := make([]models.OrderItem, len(req.Items))

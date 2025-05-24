@@ -115,7 +115,7 @@ func (r *OrderRepository) DeleteOrder(ctx context.Context, id string) error {
 
 	return nil
 }
-// тут транзакция, которую я еще давно делала, но не помню, как она работает
+
 func (r *OrderRepository) PayOrder(ctx context.Context, userID string, orderIDs []string) ([]models.Order, error) {
 	uid, err := primitive.ObjectIDFromHex(userID)
 	if err != nil {
